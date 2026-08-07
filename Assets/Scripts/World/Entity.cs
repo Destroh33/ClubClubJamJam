@@ -1,11 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum EntityType { Robot, Box, Wall }
-
 public struct EntityState {
   public Vector2Int pos;
-  public EntityType type;
   public bool alive;
 }
 
@@ -13,17 +10,20 @@ public struct EntityState {
 public class Entity : MonoBehaviour
 {
     public Board board;
-    public EntityType type;
-    public bool alive = true;
-    public bool isPushable => type == EntityType.Box;
 
     [SerializeField] public Vector2Int pos;
+    public bool alive = true;
+
     [SerializeField] public float animationSpeed = 10f;
 
+    public virtual bool IsPushable()
+    {
+        return false;
+    }
 
     void Awake() {
+        pos = GetGridPos(transform.position);
         Init();
-        type = EntityType.Box;
     }
 
     void Update() {
@@ -37,33 +37,31 @@ public class Entity : MonoBehaviour
 
     public EntityState Save()
     {
-        return new EntityState {pos = pos, type = type, alive = alive};
+        return new EntityState {pos = pos, alive = alive};
     }
 
     public void Restore(EntityState state)
     {
         pos = state.pos;
-        type = state.type;
         alive = state.alive;
 
         Init();
     }
 
-    public Vector3 GetWorldPos(Vector2Int GridPos)
+    public Vector3 GetWorldPos(Vector2Int gridPos)
     {
-        return new Vector3(GridPos.x, GridPos.y);
+        return new Vector3(gridPos.x, gridPos.y);
+    }
+    public Vector2Int GetGridPos(Vector3 worldPos)
+    {
+        return new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
     }
 
     public virtual void Tick() { }
 
-    protected void Move(Vector2Int newPos)
+    public virtual bool CanPush(Vector2Int dir)
     {
-        pos = newPos;
-    }
-
-    public bool CanPush(Vector2Int dir)
-    {
-        if (!isPushable) return false;
+        if (!IsPushable()) return false;
 
         Entity next = board.At(pos + dir);
         if (next == null) return true;
@@ -71,20 +69,20 @@ public class Entity : MonoBehaviour
         return next.CanPush(dir);
     }
 
-    public bool TryPush(Vector2Int dir)
+    public virtual bool TryPush(Vector2Int dir)
     {
-        if (!isPushable) return false;
+        if (!IsPushable()) return false;
 
         Entity next = board.At(pos + dir);
         if (next == null)
         {
-            Move(pos + dir);
+            pos = pos + dir;
             return true;
         }
 
         if (next.TryPush(dir))
         {
-            Move(pos + dir);
+            pos = pos + dir;
             return true;
         }
 

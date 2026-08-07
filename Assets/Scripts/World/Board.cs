@@ -50,7 +50,7 @@ public class Board : MonoBehaviour
 
     }
 
-    public void SaveSnapshot()
+    public void Snapshot()
     {
         var snap = new EntityState[entities.Length];
         for (int i = 0; i < entities.Length; i++) {
@@ -80,7 +80,7 @@ public class Board : MonoBehaviour
 
     public void Tick()
     {
-        SaveSnapshot();
+        Snapshot();
 
         foreach (Entity e in entities) e.Tick();
     }
