@@ -12,4 +12,5 @@ public class SyntaxTheme
     public Color punctuation = new Color(0.62f, 0.65f, 0.72f);
     public Color plainText = new Color(0.88f, 0.9f, 0.94f);
     public Color errorLine = new Color(1f, 0.46f, 0.42f);
+    public Color dropLine = new Color(0.055f, 0.063f, 0.09f, 1f);
 }
