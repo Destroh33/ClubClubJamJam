@@ -1,7 +1,17 @@
 using TMPro;
 using UnityEngine;
-using Unity;
 using System.Collections.Generic;
+using System;
+using UnityEngine.Events;
+using Unity.VisualScripting;
+
+
+[Serializable]
+public struct CommandToAction
+{
+    public string commandName;
+    public UnityEvent commandAction;
+}
 
 public class CodeParsing : MonoBehaviour
 {
@@ -10,17 +20,24 @@ public class CodeParsing : MonoBehaviour
     public int lineOfExecution = 0;
     public int totalLines;
 
-    public static List<string> commandList = new List<string>();
+    public List<CommandToAction> commandList;
+    private Dictionary<string, UnityEvent> commandsDict = new Dictionary<string, UnityEvent>();
 
-    [SerializeF]
+    public List<string> executionList = new List<string>();
+
+    
 
     private void Awake()
     {
         commandList.Clear();
+        foreach (CommandToAction command in commandList) 
+        {
+            commandsDict.Add(command.commandName, command.commandAction);
+        }
     }
 
     /// <summary>
-    /// Code commands are separated purely by semicolons. There are no loops/conditionals, so 
+    /// Code commands are separated purely by semicolons, each command is the block in between the semicolons
     /// </summary>
     /// <param name="code"></param>
     public void ParseText(TextMeshProUGUI codeText) 
@@ -35,7 +52,8 @@ public class CodeParsing : MonoBehaviour
             {//LINE OF COMMAND
                 string command = code.Substring(0, indSemicolonNext);
                 command.Trim();
-                commandList.Add(command);
+                command.ToLower();
+                executionList.Add(command);
             }
             else 
             {
@@ -65,36 +83,32 @@ public class CodeParsing : MonoBehaviour
     {
         string argString =  "";
         int argAsNumber;
-        if (command.IndexOf('(') != -1) 
+        if (command.IndexOf('(') != -1)
         {
             argString = command.Substring(command.IndexOf('(')); //gets the argument
             argString.Trim();
             argString = argString.Trim('(', ')');
         }
-        int.TryParse(argString, out argAsNumber); //
+        else 
+        {
+            LogError("Error: function is missing parenthesis");
+        }
+        int.TryParse(argString, out argAsNumber);
 
         string commandName = command.Substring(0, command.IndexOf("("));
 
-        switch (commandName)  //just call the necessary command here
+        if (!commandsDict.ContainsKey(commandName))
         {
-            case "up":
-                break;
-            case "down":
-                break;
-            case "left":
-                break;
-            case "right":
-                break;
-            case "useAbility":
-                break;
-            case "wait":
-                break;
-            case "upload":
-                break;
-            default:
-                LogError("Unknown command - check if there's a typo or missing semicolon");
-                break;
+            LogError("Error: invalid function");
+            return;
         }
+
+        commandsDict[commandName].Invoke();
+    }
+
+    void IncrementLineOfExecution(bool shouldIncrement) 
+    {
+        if(shouldIncrement)lineOfExecution++;
     }
 
 
