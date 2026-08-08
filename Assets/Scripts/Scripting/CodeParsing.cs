@@ -1,9 +1,7 @@
-using NUnit.Framework;
-using System.Linq;
 using TMPro;
 using UnityEngine;
+using Unity;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 public class CodeParsing : MonoBehaviour
 {
@@ -12,7 +10,14 @@ public class CodeParsing : MonoBehaviour
     public int lineOfExecution = 0;
     public int totalLines;
 
-    public List<string> commandList = new List<string>();
+    public static List<string> commandList = new List<string>();
+
+    [SerializeF]
+
+    private void Awake()
+    {
+        commandList.Clear();
+    }
 
     /// <summary>
     /// Code commands are separated purely by semicolons. There are no loops/conditionals, so 
@@ -58,15 +63,19 @@ public class CodeParsing : MonoBehaviour
     /// <param name="command"></param>
     public void ExecuteCommand(string command) 
     {
-        string args =  "";
+        string argString =  "";
+        int argAsNumber;
         if (command.IndexOf('(') != -1) 
         {
-            args = command.Substring(command.IndexOf('(')); //gets the argument
-            args.Trim();
-            args = args.Trim('(', ')');
+            argString = command.Substring(command.IndexOf('(')); //gets the argument
+            argString.Trim();
+            argString = argString.Trim('(', ')');
         }
+        int.TryParse(argString, out argAsNumber); //
 
-        switch (command)  //just call the necessary command here
+        string commandName = command.Substring(0, command.IndexOf("("));
+
+        switch (commandName)  //just call the necessary command here
         {
             case "up":
                 break;
