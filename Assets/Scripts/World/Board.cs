@@ -45,7 +45,7 @@ public class Board : MonoBehaviour
 
     public void Init()
     {
-        entities = FindObjectsOfType<Entity>();
+        entities = FindObjectsByType<Entity>();
         foreach (var e in entities) e.board = this;
 
     }
