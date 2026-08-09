@@ -11,9 +11,9 @@ public class CommandsListEntry
     public int numTicksLeft;
 }
 
-public class CodeParsing : MonoBehaviour
+public static class CodeParsing
 {
-    public TextMeshProUGUI errorOutputText;
+    // public TextMeshProUGUI errorOutputText;
 
 
     /// <summary>
@@ -98,10 +98,10 @@ public class CodeParsing : MonoBehaviour
 
 
 
-    public void LogError(string errorText) 
-    {
-        errorOutputText.text = errorText;
-    }
+    // public void LogError(string errorText) 
+    // {
+    //     errorOutputText.text = errorText;
+    // }
 
     
 }

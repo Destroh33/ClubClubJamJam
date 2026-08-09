@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Robot : Entity
+public abstract class Robot : Entity
 {
 
     public bool Move(Vector2Int dir)
@@ -41,9 +41,9 @@ public class Robot : Entity
         return Move(new Vector2Int(1, 0));
     }
 
-    public override void UseAbility() { }
+    public abstract void UseAbility();
 
-    public override void AttachScript() { }
+    public abstract void AttachScript();
 
 
 }
