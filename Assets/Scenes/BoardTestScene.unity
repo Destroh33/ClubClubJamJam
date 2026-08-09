@@ -319,6 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59162b48bedce443dbf9dcf598483aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Board
+  ground: {fileID: 0}
   entities: []
 --- !u!4 &318039847
 Transform:

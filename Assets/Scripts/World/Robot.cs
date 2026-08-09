@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Robot : Entity
 {
@@ -97,7 +98,8 @@ public class Robot : Entity
         var state = base.Save();
         if (codeExecutor != null)
         {
-            state.command = codeExecutor.currentCommand;
+            state.currentCommand = codeExecutor.currentCommand;
+            state.commandsList = new List<CommandsListEntry>(codeExecutor.commandsList);
             state.ticks = codeExecutor.Done ? 0 : codeExecutor.commandsList[codeExecutor.currentCommand].numTicksLeft;
         }
         return state;
@@ -109,7 +111,8 @@ public class Robot : Entity
         if (codeExecutor == null)
             return;
 
-        codeExecutor.currentCommand = state.command;
+        codeExecutor.currentCommand = state.currentCommand;
+        codeExecutor.commandsList = new List<CommandsListEntry>(state.commandsList);
         if (!codeExecutor.Done)
             codeExecutor.commandsList[codeExecutor.currentCommand].numTicksLeft = state.ticks;
     }

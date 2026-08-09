@@ -1,10 +1,12 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public struct EntityState
 {
     public Vector2Int pos;
     public bool alive;
-    public int command;
+    public List<CommandsListEntry> commandsList;
+    public int currentCommand;
     public int ticks;
     public bool carrying;
 }
