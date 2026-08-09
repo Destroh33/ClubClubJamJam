@@ -55,6 +55,12 @@ public static class TerminalCommands
 
     static void Run(string[] arguments, TerminalPanel terminal)
     {
+        if (terminal.Runner.Started)
+        {
+            terminal.PrintError("run not valid, reset first");
+            return;
+        }
+
         var brain = Object.FindAnyObjectByType<BrainRobot>();
         if (brain == null)
         {
@@ -106,9 +112,7 @@ public static class TerminalCommands
 
     static void Reset(string[] arguments, TerminalPanel terminal)
     {
-        while (terminal.Runner.board.UndoTick()) { }
-        terminal.Clock.Running = false;
-        terminal.Clock.Paused = false;
+        terminal.Runner.Reset();
         terminal.Print("level reset");
     }
 

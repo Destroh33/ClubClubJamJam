@@ -9,7 +9,6 @@ public class CodePanel : MonoBehaviour
 {
     const int MaxHistory = 200;
     const string Indent = "    ";
-    const string TabIndent = "   ";
 
     public TMP_InputField input;
     public TMP_Text overlay;
@@ -52,12 +51,6 @@ public class CodePanel : MonoBehaviour
         if (!input.isFocused || keyboard == null)
             return;
 
-        if (keyboard.tabKey.wasPressedThisFrame)
-        {
-            InsertAtCaret(TabIndent);
-            return;
-        }
-
         if (!keyboard.ctrlKey.isPressed)
             return;
 
@@ -91,8 +84,18 @@ public class CodePanel : MonoBehaviour
     {
         if (value.IndexOf('\t') >= 0)
         {
+            int caret = input.caretPosition;
+            int tabs = 0;
+            for (int i = 0; i < caret && i < value.Length; i++)
+            {
+                if (value[i] == '\t')
+                    tabs++;
+            }
+
             value = Untab(value);
             input.SetTextWithoutNotify(value);
+            input.caretPosition = Mathf.Clamp(caret + tabs * (Indent.Length - 1), 0, value.Length);
+            input.stringPosition = input.caretPosition;
         }
 
         Record(value);

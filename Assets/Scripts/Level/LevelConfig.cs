@@ -9,6 +9,7 @@ public class LevelConfig : ScriptableObject
     public int extraFiles = 2;
     public List<string> extraPrograms = new List<string>();
     public float startSpeed = 1f;
+    public int maxTicks = 40;
     public LevelConfig next;
 
     public Workspace CreateWorkspace()

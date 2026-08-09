@@ -20,30 +20,40 @@ public class TerminalPanel : MonoBehaviour
     public TMP_Text output;
     public ScrollRect scroll;
 
-    public Workspace Workspace { get; private set; }
-    public LevelRunner Runner { get; private set; }
+    public Workspace Workspace;
+    public LevelRunner Runner;
     public CommandRegistry Commands { get; private set; }
 
     public SimulationClock Clock
     {
-        get { return Runner.Clock; }
+        get { return Runner != null ? Runner.Clock : null; }
     }
 
     readonly StringBuilder log = new StringBuilder();
     readonly List<string> history = new List<string>();
     int historyIndex;
+    string status = "";
 
-    public void Bind(Workspace workspace, LevelRunner runner)
+    public void Bind(CommandRegistry commands, string greeting)
     {
-        Workspace = workspace;
-        Runner = runner;
-        Commands = new CommandRegistry();
-        TerminalCommands.RegisterAll(Commands);
+        Commands = commands;
 
         input.onSubmit.AddListener(OnSubmit);
-        Print("shellsweep terminal");
+        Print(greeting);
         PrintMuted("type help to see what you can do");
         input.ActivateInputField();
+    }
+
+    public void SetStatus(string text)
+    {
+        status = text;
+        Flush();
+    }
+
+    public void ClearStatus()
+    {
+        status = "";
+        Flush();
     }
 
     void Update()
@@ -117,9 +127,13 @@ public class TerminalPanel : MonoBehaviour
                 log.Remove(0, cut + 1);
         }
 
-        output.text = log.ToString();
+        output.text = log.ToString() + status;
         Canvas.ForceUpdateCanvases();
-        scroll.verticalNormalizedPosition = 0f;
+
+        if (scroll.content.rect.height > scroll.viewport.rect.height)
+            scroll.verticalNormalizedPosition = 0f;
+        else
+            scroll.content.anchoredPosition = Vector2.zero;
     }
 
     void OnSubmit(string line)

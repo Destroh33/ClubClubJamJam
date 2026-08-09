@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[ExecuteAlways]
 public class WindowPanel : MonoBehaviour, IPointerDownHandler
 {
     const float MinWidth = 280f;
     const float MinHeight = 160f;
+
+    public bool locked;
 
     public bool Maximized { get; private set; }
 
@@ -26,22 +29,42 @@ public class WindowPanel : MonoBehaviour, IPointerDownHandler
         transform.SetAsLastSibling();
     }
 
+    void Start()
+    {
+        if (locked)
+            Maximize();
+    }
+
+    void LateUpdate()
+    {
+        if (locked)
+            Rect.sizeDelta = Parent.rect.size;
+    }
+
     public void ToggleMaximize()
     {
-        if (!Maximized)
-        {
-            savedPosition = Rect.anchoredPosition;
-            savedSize = Rect.sizeDelta;
-            Rect.anchoredPosition = Vector2.zero;
-            Rect.sizeDelta = Parent.rect.size;
-        }
-        else
+        if (locked)
+            return;
+
+        if (Maximized)
         {
             Rect.anchoredPosition = savedPosition;
             Rect.sizeDelta = savedSize;
+            Maximized = false;
+            transform.SetAsLastSibling();
+            return;
         }
 
-        Maximized = !Maximized;
+        Maximize();
+    }
+
+    void Maximize()
+    {
+        savedPosition = Rect.anchoredPosition;
+        savedSize = Rect.sizeDelta;
+        Rect.anchoredPosition = Vector2.zero;
+        Rect.sizeDelta = Parent.rect.size;
+        Maximized = true;
         transform.SetAsLastSibling();
     }
 
