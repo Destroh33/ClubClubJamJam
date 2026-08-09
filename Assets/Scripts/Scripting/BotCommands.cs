@@ -31,7 +31,6 @@ public static class BotCommands
         new CommandInfo("down", ArgumentKind.Number, "down(tiles);", "Move south the given number of tiles."),
         new CommandInfo("left", ArgumentKind.Number, "left(tiles);", "Move west the given number of tiles."),
         new CommandInfo("right", ArgumentKind.Number, "right(tiles);", "Move east the given number of tiles."),
-        new CommandInfo("ability", ArgumentKind.None, "ability();", "Trigger whatever this bot is built to do."),
         new CommandInfo("wait", ArgumentKind.Number, "wait(ticks);", "Do nothing for the given number of ticks."),
         new CommandInfo("pickup", ArgumentKind.None, "pickup();", "Take a shell from a neighbouring tile. Main bot only."),
         new CommandInfo("give", ArgumentKind.None, "give();", "Hand the shell to a neighbouring crab. Main bot only."),

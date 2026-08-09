@@ -17,6 +17,6 @@ MonoBehaviour:
     right(6);\n    give();\n}\n"
   extraFiles: 1
   extraPrograms:
-  - "dozer {\n    right(1);\n    ability();\n}\n"
+  - "dozer {\n    right(1);\n    down(2);\n}\n"
   startSpeed: 1
   next: {fileID: 0}

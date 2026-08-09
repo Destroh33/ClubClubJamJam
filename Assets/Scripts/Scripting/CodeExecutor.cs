@@ -52,9 +52,6 @@ public class CodeExecutor : MonoBehaviour
             case "right":
                 robot.Right();
                 break;
-            case "ability":
-                robot.UseAbility();
-                break;
             case "wait":
                 break;
             case "pickup":

@@ -16,9 +16,4 @@ public class TestBot : Robot
         else if (dir.y < -0.5f)
             Down();
     }
-
-    public void OnAttack()
-    {
-        UseAbility();
-    }
 }

@@ -37,15 +37,22 @@ public class Robot : Entity
 
         Vector2Int target = pos + dir;
 
-        if (board.AnyAt(target) is Spike)
+        Spike spike = board.At<Spike>(target);
+        if (spike != null)
         {
-            pos = target;
-            Die();
-            return true;
+            if (!CanCrush())
+            {
+                pos = target;
+                Die();
+                return true;
+            }
+
+            spike.alive = false;
+            spike.Init();
         }
 
         Entity next = board.EntityAt(target);
-        if (next != null && !next.TryPush(dir))
+        if (next != null && (!CanPush() || !next.TryPush(dir)))
             return false;
 
         if (!board.IsStandable(target))
@@ -85,7 +92,15 @@ public class Robot : Entity
         return Move(new Vector2Int(1, 0));
     }
 
-    public virtual void UseAbility() { }
+    public virtual bool CanPush()
+    {
+        return false;
+    }
+
+    public virtual bool CanCrush()
+    {
+        return false;
+    }
 
     public virtual void PickUp() { }
 

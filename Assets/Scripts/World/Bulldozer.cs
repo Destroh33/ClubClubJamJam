@@ -1,12 +1,7 @@
 public class Bulldozer : Robot
 {
-    public override void UseAbility()
+    public override bool CanCrush()
     {
-        var spike = board.FindNear<Spike>(pos);
-        if (spike == null)
-            return;
-
-        spike.alive = false;
-        spike.Init();
+        return true;
     }
 }

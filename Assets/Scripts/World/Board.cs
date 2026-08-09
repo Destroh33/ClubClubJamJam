@@ -84,6 +84,16 @@ public class Board : MonoBehaviour
         return null;
     }
 
+    public T At<T>(Vector2Int pos) where T : Entity
+    {
+        foreach (Entity e in entities)
+        {
+            if (e.alive && e.pos == pos && e is T found)
+                return found;
+        }
+        return null;
+    }
+
     public T FindNear<T>(Vector2Int pos) where T : Entity
     {
         foreach (var dir in Neighbours)
