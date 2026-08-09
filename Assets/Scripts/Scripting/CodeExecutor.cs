@@ -20,6 +20,10 @@ public class CodeExecutor : MonoBehaviour
 
     public void ExecuteCommand()
     {
+        if (currentCommand >= commandsList.Count) 
+        {
+            return;
+        }
 
         switch (commandsList[currentCommand].name) 
         {
@@ -43,6 +47,10 @@ public class CodeExecutor : MonoBehaviour
         }
 
         commandsList[currentCommand].numTicksLeft -= 1;
+        if (commandsList[currentCommand].numTicksLeft <= 0) 
+        {
+            currentCommand++;
+        }
 
     }
 }

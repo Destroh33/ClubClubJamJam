@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using UnityEngine.Events;
 
 [Serializable]
 public class CommandsListEntry
@@ -21,11 +20,10 @@ public class CodeParsing : MonoBehaviour
     /// Code commands are separated purely by semicolons, each command is the block in between the semicolons
     /// </summary>
     /// <param name="codeText"></param> 
-    public static List<CommandsListEntry> ParseText(TextMeshProUGUI codeText) 
+    public static List<CommandsListEntry> ParseText(string code) 
     {
         List<string> commandList = new List<string>();
-
-        string code = codeText.text;
+        
         int count = 0;
 
         while (code.Length != 0) 
@@ -39,6 +37,12 @@ public class CodeParsing : MonoBehaviour
                 command = command.ToLower();
                 commandList.Add(command);
             }
+            code = code.Substring(indSemicolonNext + 1);
+            if (code.Length == 0) 
+            {
+                break;
+            }
+
             count++;
             if (count > 500) break;
             
@@ -71,8 +75,12 @@ public class CodeParsing : MonoBehaviour
             else
             {
                 //LogError("Error: function is missing parenthesis");
+                argAsNumber = 1;
             }
-            int.TryParse(argString, out argAsNumber);
+            if(!int.TryParse(argString, out argAsNumber))
+            {
+                //LogError("Error: Invalid parameter")
+            }
 
             string commandName = commandList[i].Substring(0, commandList[i].IndexOf("("));
 
@@ -80,6 +88,7 @@ public class CodeParsing : MonoBehaviour
             entry.name = commandName;
             entry.arg = argAsNumber;
             entry.numTicksLeft = (commandName == "upload" || commandName == "") ? 1 : entry.numTicksLeft = argAsNumber; //1 tick for an upload command or no param
+            executionList.Add(entry);
         }
 
 
