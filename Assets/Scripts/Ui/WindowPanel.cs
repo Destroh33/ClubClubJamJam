@@ -80,17 +80,15 @@ public class WindowPanel : MonoBehaviour, IPointerDownHandler
         else if (yDir < 0)
             size.y -= delta.y;
 
-        if (size.x < MinWidth)
-        {
-            size.x = Rect.sizeDelta.x;
-            position.x = Rect.anchoredPosition.x;
-        }
+        float width = Mathf.Max(size.x, MinWidth);
+        if (xDir < 0)
+            position.x -= width - size.x;
+        size.x = width;
 
-        if (size.y < MinHeight)
-        {
-            size.y = Rect.sizeDelta.y;
-            position.y = Rect.anchoredPosition.y;
-        }
+        float height = Mathf.Max(size.y, MinHeight);
+        if (yDir > 0)
+            position.y += height - size.y;
+        size.y = height;
 
         Rect.sizeDelta = size;
         Rect.anchoredPosition = position;
