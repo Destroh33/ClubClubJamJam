@@ -28,6 +28,13 @@ public class TerminalPanel : MonoBehaviour
     readonly List<string> history = new List<string>();
     int historyIndex;
 
+    public GameObject brainRobot;
+
+    private void Start()
+    {
+        brainRobot = FindAnyObjectByType<BrainRobot>().gameObject;
+    }
+
     public void Bind(Workspace workspace, SimulationClock clock)
     {
         Workspace = workspace;
@@ -43,6 +50,7 @@ public class TerminalPanel : MonoBehaviour
 
     void Update()
     {
+
         if (!input.isFocused || Keyboard.current == null)
             return;
 

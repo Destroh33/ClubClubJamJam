@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public static class TerminalCommands
 {
@@ -56,6 +57,11 @@ public static class TerminalCommands
     {
 
         terminal.PrintMuted("nothing to run yet");
+        Workspace workspace = terminal.Workspace;
+        ScriptFile file = workspace.Files[0];
+        CodeExecutor brainExecutor = terminal.brainRobot.GetComponent<CodeExecutor>();
+        List<CommandsListEntry> comList = CodeParsing.ParseText(file.Source);
+        brainExecutor.SetCommandList(comList);
     }
 
     static void Pause(string[] arguments, TerminalPanel terminal)
