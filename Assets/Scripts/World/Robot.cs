@@ -1,48 +1,67 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Robot : Entity
 {
-    protected CodeExecutor codeExecutor;
+    public CodeExecutor codeExecutor;
+    public Vector2Int facing = new Vector2Int(1, 0);
+
+    protected RobotView view;
 
     protected override void Awake()
     {
         base.Awake();
         codeExecutor = GetComponent<CodeExecutor>();
+        view = GetComponent<RobotView>();
+    }
+
+    public override void Tick()
+    {
+        if (alive && codeExecutor != null)
+            codeExecutor.ExecuteCommand();
+    }
+
+    public bool Done
+    {
+        get { return !alive || codeExecutor == null || codeExecutor.Done; }
     }
 
     public bool Move(Vector2Int dir)
     {
-        Entity next = board.EntityAt(pos + dir);
-        Tile nextTile = board.TileAt(pos + dir);
+        if (!alive)
+            return false;
 
-        if (next is Spike)
-        {
-            Die();
-        }
-        if (!nextTile.IsStandable())
-        {
-            Die();
-        }
+        facing = dir;
+        if (view != null)
+            view.Face(dir);
 
-        if (next == null)
+        Vector2Int target = pos + dir;
+
+        if (board.AnyAt(target) is Spike)
         {
-            pos = pos + dir;
+            pos = target;
+            Die();
             return true;
         }
 
-        if (next.TryPush(dir))
+        Entity next = board.EntityAt(target);
+        if (next != null && !next.TryPush(dir))
+            return false;
+
+        if (!board.IsStandable(target))
         {
-            pos = pos + dir;
+            pos = target;
+            Die();
             return true;
         }
 
-        return false;
+        pos = target;
+        return true;
     }
 
     public void Die()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        alive = false;
+        Init();
     }
 
     public bool Up()
@@ -65,9 +84,33 @@ public class Robot : Entity
         return Move(new Vector2Int(1, 0));
     }
 
-    public virtual void UseAbility() {}
+    public virtual void UseAbility() { }
 
-    public virtual void AttachScript() {}
+    public virtual void PickUp() { }
 
+    public virtual void Give() { }
 
+    public virtual void Upload(string file) { }
+
+    public override EntityState Save()
+    {
+        var state = base.Save();
+        if (codeExecutor != null)
+        {
+            state.command = codeExecutor.currentCommand;
+            state.ticks = codeExecutor.Done ? 0 : codeExecutor.commandsList[codeExecutor.currentCommand].numTicksLeft;
+        }
+        return state;
+    }
+
+    public override void Restore(EntityState state)
+    {
+        base.Restore(state);
+        if (codeExecutor == null)
+            return;
+
+        codeExecutor.currentCommand = state.command;
+        if (!codeExecutor.Done)
+            codeExecutor.commandsList[codeExecutor.currentCommand].numTicksLeft = state.ticks;
+    }
 }

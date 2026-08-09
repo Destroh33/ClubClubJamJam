@@ -1,11 +1,13 @@
 using UnityEngine;
-using System.Collections.Generic;
 
-public struct EntityState {
-  public Vector2Int pos;
-  public bool alive;
+public struct EntityState
+{
+    public Vector2Int pos;
+    public bool alive;
+    public int command;
+    public int ticks;
+    public bool carrying;
 }
-
 
 public class Entity : MonoBehaviour
 {
@@ -21,45 +23,49 @@ public class Entity : MonoBehaviour
         return false;
     }
 
-    protected virtual void Awake() {
+    public virtual bool IsSolid()
+    {
+        return true;
+    }
+
+    protected virtual void Awake()
+    {
         pos = Board.GetGridPos(transform.position);
         Init();
     }
 
-    protected virtual void Update() {
+    protected virtual void Update()
+    {
         transform.position = Vector3.MoveTowards(transform.position, Board.GetWorldPos(pos), animationSpeed * Time.deltaTime);
     }
 
     public virtual void Init()
     {
         transform.position = Board.GetWorldPos(pos);
+        gameObject.SetActive(alive);
     }
 
-    public EntityState Save()
+    public virtual EntityState Save()
     {
-        return new EntityState {pos = pos, alive = alive};
+        return new EntityState { pos = pos, alive = alive };
     }
 
-    public void Restore(EntityState state)
+    public virtual void Restore(EntityState state)
     {
         pos = state.pos;
         alive = state.alive;
-
         Init();
     }
 
     public virtual void Tick() { }
 
-    // public virtual void OnEnter(Entity other) { }
     public virtual bool TryPush(Vector2Int dir)
     {
-        if (!IsPushable()) return false;
-
-        Tile nextTile = board.TileAt(pos + dir);
-        if (nextTile != null && !nextTile.IsStandable())
-        {
+        if (!IsPushable())
             return false;
-        }
+
+        if (!board.IsStandable(pos + dir))
+            return false;
 
         Entity nextEntity = board.EntityAt(pos + dir);
         if (nextEntity == null)

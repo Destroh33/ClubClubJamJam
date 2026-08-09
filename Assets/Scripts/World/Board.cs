@@ -1,116 +1,98 @@
-using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.InputSystem;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Board : MonoBehaviour
 {
+    public static readonly Vector2Int[] Neighbours =
+    {
+        new Vector2Int(1, 0),
+        new Vector2Int(-1, 0),
+        new Vector2Int(0, 1),
+        new Vector2Int(0, -1)
+    };
+
+    public Tilemap ground;
     public Entity[] entities;
-    public Tile[] tiles;
-    readonly Stack<EntityState[]> entityHistory = new();
-    readonly Stack<TileState[]> tileHistory = new();
+
+    readonly Stack<EntityState[]> history = new();
 
     public static Vector3 GetWorldPos(Vector2Int gridPos)
     {
         return new Vector3(gridPos.x, gridPos.y);
     }
+
     public static Vector2Int GetGridPos(Vector3 worldPos)
     {
         return new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
     }
-
 
     void Awake()
     {
         Init();
     }
 
-    void Update()
-    {
-
-        // // TODO FOR TESTING
-        // var player = entities[0];
-        // if (Keyboard.current != null)
-        // {
-        //     if (Keyboard.current.zKey.wasPressedThisFrame) {
-        //         UndoTick();
-        //     }
-        //     else if (Keyboard.current.wKey.wasPressedThisFrame) {
-        //         Tick();
-        //         player.TryPush(new Vector2Int(0, 1));
-        //     }
-        //     else if (Keyboard.current.aKey.wasPressedThisFrame) {
-        //         Tick();
-        //         player.TryPush(new Vector2Int(-1, 0));
-        //     }
-        //     else if (Keyboard.current.sKey.wasPressedThisFrame) {
-        //         Tick();
-        //         player.TryPush(new Vector2Int(0, -1));
-        //     }
-        //     else if (Keyboard.current.dKey.wasPressedThisFrame) {
-        //         Tick();
-        //         player.TryPush(new Vector2Int(1, 0));
-        //     }
-        // }
-
-    }
-
     public void Init()
     {
-        entities = FindObjectsByType<Entity>();
-        foreach (var e in entities) e.board = this;
+        entities = FindObjectsByType<Entity>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var e in entities)
+            e.board = this;
+    }
 
-        tiles = FindObjectsByType<Tile>();
-        foreach (var e in tiles) e.board = this;
-
+    public bool IsStandable(Vector2Int pos)
+    {
+        return ground != null && ground.HasTile(new Vector3Int(pos.x, pos.y, 0));
     }
 
     public void Snapshot()
     {
-        var entitySnap = new EntityState[entities.Length];
-        for (int i = 0; i < entities.Length; i++) {
-            entitySnap[i] = entities[i].Save();
-        }
-        entityHistory.Push(entitySnap);
-
-        var tileSnap = new TileState[tiles.Length];
-        for (int i = 0; i < tiles.Length; i++)
-        {
-            tileSnap[i] = tiles[i].Save();
-        }
-        tileHistory.Push(tileSnap);
+        var snap = new EntityState[entities.Length];
+        for (int i = 0; i < entities.Length; i++)
+            snap[i] = entities[i].Save();
+        history.Push(snap);
     }
 
-    public void UndoTick()
+    public bool UndoTick()
     {
-        if (entityHistory.Count == 0 || tileHistory.Count == 0) return;
+        if (history.Count == 0)
+            return false;
 
-        var entitySnap = entityHistory.Pop();
+        var snap = history.Pop();
         for (int i = 0; i < entities.Length; i++)
-        {
-            entities[i].Restore(entitySnap[i]);
-        }
+            entities[i].Restore(snap[i]);
 
-        var tileSnap = tileHistory.Pop();
-        for (int i = 0; i < tiles.Length; i++)
-        {
-            tiles[i].Restore(tileSnap[i]);
-        }
+        return true;
     }
 
     public Entity EntityAt(Vector2Int pos)
     {
         foreach (Entity e in entities)
         {
-            if (e.pos == pos) return e;
+            if (e.alive && e.IsSolid() && e.pos == pos)
+                return e;
         }
         return null;
     }
 
-    public Tile TileAt(Vector2Int pos)
+    public Entity AnyAt(Vector2Int pos)
     {
-        foreach (Tile e in tiles)
+        foreach (Entity e in entities)
         {
-            if (e.pos == pos) return e;
+            if (e.alive && e.pos == pos)
+                return e;
+        }
+        return null;
+    }
+
+    public T FindNear<T>(Vector2Int pos) where T : Entity
+    {
+        foreach (var dir in Neighbours)
+        {
+            foreach (Entity e in entities)
+            {
+                if (e.alive && e.pos == pos + dir && e is T found)
+                    return found;
+            }
         }
         return null;
     }
@@ -118,8 +100,7 @@ public class Board : MonoBehaviour
     public void Tick()
     {
         Snapshot();
-
-        foreach (Entity e in entities) e.Tick();
+        foreach (Entity e in entities)
+            e.Tick();
     }
-
 }

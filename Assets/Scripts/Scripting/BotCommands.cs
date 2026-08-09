@@ -31,9 +31,11 @@ public static class BotCommands
         new CommandInfo("down", ArgumentKind.Number, "down(tiles);", "Move south the given number of tiles."),
         new CommandInfo("left", ArgumentKind.Number, "left(tiles);", "Move west the given number of tiles."),
         new CommandInfo("right", ArgumentKind.Number, "right(tiles);", "Move east the given number of tiles."),
-        new CommandInfo("useAbility", ArgumentKind.None, "useAbility();", "Trigger whatever this bot is built to do."),
+        new CommandInfo("ability", ArgumentKind.None, "ability();", "Trigger whatever this bot is built to do."),
         new CommandInfo("wait", ArgumentKind.Number, "wait(ticks);", "Do nothing for the given number of ticks."),
-        new CommandInfo("upload", ArgumentKind.FileName, "upload(file);", "Send a program to the bot in front. Main bot only.")
+        new CommandInfo("pickup", ArgumentKind.None, "pickup();", "Take a shell from a neighbouring tile. Main bot only."),
+        new CommandInfo("give", ArgumentKind.None, "give();", "Hand the shell to a neighbouring crab. Main bot only."),
+        new CommandInfo("upload", ArgumentKind.FileName, "upload(file);", "Send a program to a neighbouring bot. Main bot only.")
     };
 
     static readonly Dictionary<string, CommandInfo> lookup = BuildLookup();

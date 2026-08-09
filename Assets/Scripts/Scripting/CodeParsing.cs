@@ -1,107 +1,137 @@
-using TMPro;
-using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class CommandsListEntry
 {
     public string name;
     public int arg;
+    public string file;
     public int numTicksLeft;
 }
 
 public static class CodeParsing
 {
-    // public TextMeshProUGUI errorOutputText;
-
-
-    /// <summary>
-    /// Code commands are separated purely by semicolons, each command is the block in between the semicolons
-    /// </summary>
-    /// <param name="codeText"></param> 
-    public static List<CommandsListEntry> ParseText(string code) 
+    public static List<CommandsListEntry> ParseText(string code)
     {
-        List<string> commandList = new List<string>();
-
-        int count = 0;
-
-        while (code.Length != 0) 
-        {
-            int indSemicolonNext = code.IndexOf(';');
-            
-            if (indSemicolonNext == -1)break;
-
-            string command = code.Substring(0, indSemicolonNext);
-            command = command.Trim();
-            command = command.ToLower();
-            commandList.Add(command);
-
-
-            code = code.Substring(indSemicolonNext + 1);
-            if (code.Length == 0) 
-            {
-                break;
-            }
-
-            count++;
-            if (count > 500) break;
-            
-        }
-
-        return ParseExListToCommandEntries(commandList);
-
+        List<string> errors;
+        return ParseText(code, out errors);
     }
 
-
-    /// <summary>
-    /// helper function used by ParseText to get the struct based command list
-    /// </summary>
-    /// <param name="commandList"></param>
-    /// <returns></returns>
-    public static List<CommandsListEntry> ParseExListToCommandEntries(List<string> commandList) 
+    public static List<CommandsListEntry> ParseText(string code, out List<string> errors)
     {
-        if(commandList == null)return null;
-        List<CommandsListEntry> executionList = new List<CommandsListEntry>();
-        for (int i = 0; i < commandList.Count; i++) 
+        errors = new List<string>();
+        var list = new List<CommandsListEntry>();
+        if (string.IsNullOrEmpty(code))
+            return list;
+
+        foreach (string piece in Strip(code).Split(';'))
         {
-            string argString = "";
-            int argAsNumber;
-            if (commandList[i].IndexOf('(') != -1)
-            {
-                argString = commandList[i].Substring(commandList[i].IndexOf('(')); //gets the argument
-                argString = argString.Trim();
-                argString = argString.Trim('(', ')');
-            }
-            else
-            {
-                //LogError("Error: function is missing parenthesis");
-                argAsNumber = 1;
-            }
-            if(!int.TryParse(argString, out argAsNumber))
-            {
-                //LogError("Error: Invalid parameter")
-            }
+            string text = piece.Trim();
+            if (text.Length == 0)
+                continue;
 
-            string commandName = commandList[i].Substring(0, commandList[i].IndexOf("("));
-
-            CommandsListEntry entry = new CommandsListEntry();
-            entry.name = commandName;
-            entry.arg = argAsNumber;
-            entry.numTicksLeft = (commandName == "upload" || commandName == "") ? 1 : entry.numTicksLeft = argAsNumber; //1 tick for an upload command or no param
-            executionList.Add(entry);
+            var entry = ParseCommand(text, errors);
+            if (entry != null)
+                list.Add(entry);
         }
 
-
-        return executionList;
+        return list;
     }
 
+    static CommandsListEntry ParseCommand(string text, List<string> errors)
+    {
+        int open = text.IndexOf('(');
+        int close = text.LastIndexOf(')');
 
+        if (open < 0 || close < open)
+        {
+            errors.Add(text + " is missing its brackets");
+            return null;
+        }
 
-    // public void LogError(string errorText) 
-    // {
-    //     errorOutputText.text = errorText;
-    // }
+        string name = text.Substring(0, open).Trim().ToLower();
+        string arg = text.Substring(open + 1, close - open - 1).Trim();
 
-    
+        var info = BotCommands.Find(name);
+        if (info == null)
+        {
+            errors.Add("there is no command called " + name);
+            return null;
+        }
+
+        var entry = new CommandsListEntry();
+        entry.name = name;
+        entry.arg = 1;
+        entry.numTicksLeft = 1;
+
+        if (info.Argument == ArgumentKind.FileName)
+        {
+            if (arg.Length == 0)
+            {
+                errors.Add(name + " needs a file name");
+                return null;
+            }
+            entry.file = arg;
+            return entry;
+        }
+
+        if (info.Argument == ArgumentKind.Number)
+        {
+            int count;
+            if (!int.TryParse(arg, out count))
+            {
+                errors.Add(name + " needs a number, not " + arg);
+                return null;
+            }
+            if (count < 1)
+            {
+                errors.Add(name + " needs a number above zero");
+                return null;
+            }
+            entry.arg = count;
+            entry.numTicksLeft = count;
+        }
+
+        return entry;
+    }
+
+    static string Strip(string code)
+    {
+        var text = new System.Text.StringBuilder(code.Length);
+        int i = 0;
+
+        while (i < code.Length)
+        {
+            char c = code[i];
+
+            if (c == '/' && i + 1 < code.Length && code[i + 1] == '/')
+            {
+                while (i < code.Length && code[i] != '\n')
+                    i++;
+                continue;
+            }
+
+            if (c == '{')
+            {
+                int back = text.Length;
+                while (back > 0 && text[back - 1] != ';' && text[back - 1] != '\n')
+                    back--;
+                text.Length = back;
+                i++;
+                continue;
+            }
+
+            if (c == '}')
+            {
+                i++;
+                continue;
+            }
+
+            text.Append(c);
+            i++;
+        }
+
+        return text.ToString();
+    }
 }

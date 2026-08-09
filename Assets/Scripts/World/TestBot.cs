@@ -3,40 +3,21 @@ using UnityEngine.InputSystem;
 
 public class TestBot : Robot
 {
-    public override void UseAbility()
+    public void OnMove(InputValue value)
     {
-        Debug.Log("ability used");
-    }
+        Vector2 dir = value.Get<Vector2>();
 
-    public override void AttachScript()
-    {
-        Debug.Log("attach script");
-    }
-
-    public void OnMove(InputValue value) 
-    {
-        Vector2 dir = value.Get<Vector2>().normalized;
-
-        if (dir == new Vector2(1, 0))
-        {
+        if (dir.x > 0.5f)
             Right();
-        }
-        else if (dir == new Vector2(-1, 0)) 
-        {
+        else if (dir.x < -0.5f)
             Left();
-        }
-        else if (dir == new Vector2(0, 1))
-        {
+        else if (dir.y > 0.5f)
             Up();
-        }
-        else if (dir == new Vector2(0, -1))
-        {
+        else if (dir.y < -0.5f)
             Down();
-        }
-
     }
 
-    public void OnAttack() 
+    public void OnAttack()
     {
         UseAbility();
     }

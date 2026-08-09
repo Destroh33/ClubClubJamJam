@@ -21,24 +21,22 @@ public class TerminalPanel : MonoBehaviour
     public ScrollRect scroll;
 
     public Workspace Workspace { get; private set; }
-    public SimulationClock Clock { get; private set; }
+    public LevelRunner Runner { get; private set; }
     public CommandRegistry Commands { get; private set; }
+
+    public SimulationClock Clock
+    {
+        get { return Runner.Clock; }
+    }
 
     readonly StringBuilder log = new StringBuilder();
     readonly List<string> history = new List<string>();
     int historyIndex;
 
-    public GameObject brainRobot;
-
-    private void Start()
-    {
-        brainRobot = FindAnyObjectByType<BrainRobot>().gameObject;
-    }
-
-    public void Bind(Workspace workspace, SimulationClock clock)
+    public void Bind(Workspace workspace, LevelRunner runner)
     {
         Workspace = workspace;
-        Clock = clock;
+        Runner = runner;
         Commands = new CommandRegistry();
         TerminalCommands.RegisterAll(Commands);
 

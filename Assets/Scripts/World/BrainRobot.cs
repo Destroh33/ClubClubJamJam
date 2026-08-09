@@ -1,43 +1,63 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class BrainRobot : Robot
 {
-    private TerminalPanel terminal;
+    public bool carrying;
+    public Workspace workspace;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void PickUp()
     {
-        terminal = FindAnyObjectByType<TerminalPanel>();
+        if (carrying)
+            return;
+
+        var shell = board.FindNear<Shell>(pos);
+        if (shell == null)
+            return;
+
+        shell.Take();
+        carrying = true;
     }
 
-    public override void UseAbility()
+    public override void Give()
     {
-        Debug.Log("ability used");
+        if (!carrying)
+            return;
+
+        var crab = board.FindNear<Crab>(pos);
+        if (crab == null || !crab.Receive())
+            return;
+
+        carrying = false;
     }
 
-    public override void AttachScript()
+    public override void Upload(string file)
     {
-        Debug.Log("attach script");
+        if (workspace == null)
+            return;
+
+        var script = workspace.Find(file);
+        if (script == null)
+            return;
+
+        var target = board.FindNear<Robot>(pos);
+        if (target == null || target == this)
+            return;
+
+        var executor = target.GetComponent<CodeExecutor>();
+        if (executor != null)
+            executor.SetCommandList(CodeParsing.ParseText(script.Source));
     }
 
-
-    /// <summary>
-    /// note that file 0 is the brain file used for this robot - probably won't work properly for child bots
-    /// </summary>
-    /// <param name="otherBot"></param>
-    /// <param name="numOfFile"></param>
-    public void UploadToBot(CodeExecutor otherBot, int numOfFile) 
+    public override EntityState Save()
     {
-        Workspace workspace = terminal.Workspace;
-        ScriptFile file = workspace.Files[numOfFile];
-        List<CommandsListEntry> comList = CodeParsing.ParseText(file.Source);
-        otherBot.SetCommandList(comList);
+        var state = base.Save();
+        state.carrying = carrying;
+        return state;
     }
 
-    public void OnAttack()
+    public override void Restore(EntityState state)
     {
-        UseAbility();
+        carrying = state.carrying;
+        base.Restore(state);
     }
 }

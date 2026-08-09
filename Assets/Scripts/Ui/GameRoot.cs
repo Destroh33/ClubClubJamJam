@@ -4,6 +4,7 @@ public class GameRoot : MonoBehaviour
 {
     public CodePanel code;
     public TerminalPanel terminal;
+    public LevelRunner runner;
     public CursorSet cursors = new CursorSet();
 
     public static CursorSet Cursors = new CursorSet();
@@ -13,8 +14,14 @@ public class GameRoot : MonoBehaviour
         Cursors = cursors;
         cursors.ShowPointer();
 
-        var workspace = Workspace.CreateStarter();
+        var workspace = runner.level != null ? runner.level.CreateWorkspace() : Workspace.CreateStarter();
+
+        var brain = FindAnyObjectByType<BrainRobot>();
+        if (brain != null)
+            brain.workspace = workspace;
+
+        runner.Bind(terminal);
         code.Bind(workspace);
-        terminal.Bind(workspace, new SimulationClock());
+        terminal.Bind(workspace, runner);
     }
 }

@@ -5,75 +5,71 @@ using UnityEngine;
 public class CodeExecutor : MonoBehaviour
 {
     public List<CommandsListEntry> commandsList = new List<CommandsListEntry>();
+    public int currentCommand;
 
-    public List<string> validCommandNames;
-    public
-    int currentCommand = 0;
+    Robot robot;
 
-    //new CommandInfo("up;", ArgumentKind.Number, "up(tiles)", "Move north the given number of tiles."),
-    //    new CommandInfo("down;", ArgumentKind.Number, "down(tiles)", "Move south the given number of tiles."),
-    //    new CommandInfo("left;", ArgumentKind.Number, "left(tiles)", "Move west the given number of tiles."),
-    //    new CommandInfo("right;", ArgumentKind.Number, "right(tiles)", "Move east the given number of tiles."),
-    //    new CommandInfo("useAbility;", ArgumentKind.None, "useAbility()", "Trigger whatever this bot is built to do."),
-    //    new CommandInfo("wait;", ArgumentKind.Number, "wait(ticks)", "Do nothing for the given number of ticks."),
-    //    new CommandInfo("upload;", ArgumentKind.FileName, "upload(file)", "Send a program to the bot in front. Main bot only.")
-
-    /// <summary>
-    /// <param name="command"></param>
-    /// 
-
-    public void SetCommandList(List<CommandsListEntry> comList) 
+    void Awake()
     {
-        commandsList.Clear();
-        commandsList = comList;
-    } 
+        robot = GetComponent<Robot>();
+    }
+
+    public bool Done
+    {
+        get { return currentCommand >= commandsList.Count; }
+    }
+
+    public void SetCommandList(List<CommandsListEntry> list)
+    {
+        commandsList = list;
+        currentCommand = 0;
+    }
 
     public void ClearCommandList()
     {
         commandsList.Clear();
+        currentCommand = 0;
     }
 
     public void ExecuteCommand()
     {
-        if (currentCommand >= commandsList.Count) 
-        {
+        if (Done || !robot.alive)
             return;
-            //end of execution
-        }
-        if (!validCommandNames.Contains(commandsList[currentCommand].name)) 
-        {
-            commandsList[currentCommand].numTicksLeft = 0;
-            currentCommand++;
-            return;
-            //error
-        }
 
-        switch (commandsList[currentCommand].name) 
+        var entry = commandsList[currentCommand];
+
+        switch (entry.name)
         {
             case "up":
+                robot.Up();
                 break;
             case "down":
+                robot.Down();
                 break;
             case "left":
+                robot.Left();
                 break;
             case "right":
+                robot.Right();
                 break;
-            case "useAbility":
+            case "ability":
+                robot.UseAbility();
                 break;
             case "wait":
                 break;
+            case "pickup":
+                robot.PickUp();
+                break;
+            case "give":
+                robot.Give();
+                break;
             case "upload":
-                break;
-
-            default:
+                robot.Upload(entry.file);
                 break;
         }
 
-        commandsList[currentCommand].numTicksLeft -= 1;
-        if (commandsList[currentCommand].numTicksLeft <= 0) 
-        {
+        entry.numTicksLeft--;
+        if (entry.numTicksLeft <= 0)
             currentCommand++;
-        }
-
     }
 }
