@@ -21,13 +21,13 @@ MonoBehaviour:
 '
   extraFiles: 2
   extraPrograms:
-  - 'dozer {
+  - 'heavy {
 
 
     }
 
 '
-  - 'heavy {
+  - 'dozer {
 
 
     }

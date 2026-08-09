@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5641663661080599873}
   - component: {fileID: 1975939004356756767}
   m_Layer: 0
-  m_Name: Button
+  m_Name: ButtonRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 2038276283, guid: 09c51cea66a055542948f688be18ab1a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -109,4 +109,6 @@ MonoBehaviour:
   pos: {x: 0, y: 0}
   alive: 1
   animationSpeed: 10
+  openButton: {fileID: 696826152, guid: 09c51cea66a055542948f688be18ab1a, type: 3}
+  closeButton: {fileID: 1495907169, guid: 09c51cea66a055542948f688be18ab1a, type: 3}
   channel: 0
