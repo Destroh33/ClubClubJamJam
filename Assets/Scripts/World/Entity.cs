@@ -11,6 +11,8 @@ public struct EntityState
     public int carrying;
 }
 
+public enum Channel { None, Red, Blue, Green, Yellow }
+
 public class Entity : MonoBehaviour
 {
     public Board board;

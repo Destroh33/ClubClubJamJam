@@ -14,6 +14,8 @@ public class Board : MonoBehaviour
 
     public Tilemap ground;
     public Entity[] entities;
+    
+    public GameButton[] buttons;
 
     readonly Stack<EntityState[]> history = new();
 
@@ -37,11 +39,23 @@ public class Board : MonoBehaviour
         entities = FindObjectsByType<Entity>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var e in entities)
             e.board = this;
+
+        buttons = FindObjectsByType<GameButton>(FindObjectsInactive.Include, FindObjectsSortMode.None);
     }
 
     public bool IsStandable(Vector2Int pos)
     {
         return ground != null && ground.HasTile(new Vector3Int(pos.x, pos.y, 0));
+    }
+
+    public bool IsChannelActive(Channel channel) {
+        if (channel == Channel.None) return false;
+
+        foreach (var b in buttons)
+        {
+            if (b.channel == channel && b.IsPressed()) return true;
+        }
+        return false;
     }
 
     public void Snapshot()

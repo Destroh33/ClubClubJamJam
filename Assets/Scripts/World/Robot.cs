@@ -52,7 +52,7 @@ public class Robot : Entity
         }
 
         Entity next = board.EntityAt(target);
-        if (next != null && (!CanPush() || !next.TryPush(dir)))
+        if (next != null && (next.IsSolid() && !next.TryPush(dir)))
             return false;
 
         if (!board.IsStandable(target))
