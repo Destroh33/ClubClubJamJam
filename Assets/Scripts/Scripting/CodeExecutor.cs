@@ -20,6 +20,16 @@ public class CodeExecutor : MonoBehaviour
     /// <param name="command"></param>
     /// 
 
+    public void UploadCommands(string filename)
+    {
+        
+    }
+
+    public void RemoveCommands()
+    {
+        commandsList = new List<CommandsListEntry>();
+    }
+
     public void ExecuteCommand()
     {
         if (currentCommand >= commandsList.Count) 
