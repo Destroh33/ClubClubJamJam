@@ -16,30 +16,30 @@ public class Board : MonoBehaviour
     void Update()
     {
 
-        // TODO FOR TESTING
-        var player = entities[0];
-        if (Keyboard.current != null)
-        {
-            if (Keyboard.current.zKey.wasPressedThisFrame) {
-                UndoTick();
-            }
-            else if (Keyboard.current.wKey.wasPressedThisFrame) {
-                Tick();
-                player.TryPush(new Vector2Int(0, 1));
-            }
-            else if (Keyboard.current.aKey.wasPressedThisFrame) {
-                Tick();
-                player.TryPush(new Vector2Int(-1, 0));
-            }
-            else if (Keyboard.current.sKey.wasPressedThisFrame) {
-                Tick();
-                player.TryPush(new Vector2Int(0, -1));
-            }
-            else if (Keyboard.current.dKey.wasPressedThisFrame) {
-                Tick();
-                player.TryPush(new Vector2Int(1, 0));
-            }
-        }
+        // // TODO FOR TESTING
+        // var player = entities[0];
+        // if (Keyboard.current != null)
+        // {
+        //     if (Keyboard.current.zKey.wasPressedThisFrame) {
+        //         UndoTick();
+        //     }
+        //     else if (Keyboard.current.wKey.wasPressedThisFrame) {
+        //         Tick();
+        //         player.TryPush(new Vector2Int(0, 1));
+        //     }
+        //     else if (Keyboard.current.aKey.wasPressedThisFrame) {
+        //         Tick();
+        //         player.TryPush(new Vector2Int(-1, 0));
+        //     }
+        //     else if (Keyboard.current.sKey.wasPressedThisFrame) {
+        //         Tick();
+        //         player.TryPush(new Vector2Int(0, -1));
+        //     }
+        //     else if (Keyboard.current.dKey.wasPressedThisFrame) {
+        //         Tick();
+        //         player.TryPush(new Vector2Int(1, 0));
+        //     }
+        // }
 
     }
 
