@@ -54,6 +54,7 @@ public static class TerminalCommands
 
     static void Run(string[] arguments, TerminalPanel terminal)
     {
+
         terminal.PrintMuted("nothing to run yet");
     }
 

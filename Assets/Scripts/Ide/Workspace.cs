@@ -44,9 +44,9 @@ public class Workspace
     public static Workspace CreateStarter()
     {
         var workspace = new Workspace();
-        workspace.Files.Add(new ScriptFile("main", "main {\n    right(3)\n    upload(file1)\n    down(2)\n}\n"));
-        workspace.Files.Add(new ScriptFile("file1", "dozer {\n    // clear a path through the trash\n    up(4)\n    useAbility()\n}\n"));
-        workspace.Files.Add(new ScriptFile("file2", "waiter {\n    wait(3)\n    left(2)\n}\n"));
+        workspace.Files.Add(new ScriptFile("main", "main {\n    right(3);\n    upload(1);\n    down(2);\n}\n"));
+        workspace.Files.Add(new ScriptFile("file1", "dozer {\nup(4);\n    useAbility();\n}\n"));
+        workspace.Files.Add(new ScriptFile("file2", "waiter {\n    wait(3);\n    left(2);\n}\n"));
         return workspace;
     }
 }
