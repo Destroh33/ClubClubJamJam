@@ -5,7 +5,18 @@ using UnityEngine.InputSystem;
 public class Board : MonoBehaviour
 {
     public Entity[] entities;
-    readonly Stack<EntityState[]> history = new();
+    public Tile[] tiles;
+    readonly Stack<EntityState[]> entityHistory = new();
+    readonly Stack<TileState[]> tileHistory = new();
+
+    public static Vector3 GetWorldPos(Vector2Int gridPos)
+    {
+        return new Vector3(gridPos.x, gridPos.y);
+    }
+    public static Vector2Int GetGridPos(Vector3 worldPos)
+    {
+        return new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
+    }
 
 
     void Awake()
@@ -48,30 +59,56 @@ public class Board : MonoBehaviour
         entities = FindObjectsByType<Entity>();
         foreach (var e in entities) e.board = this;
 
+        tiles = FindObjectsByType<Tile>();
+        foreach (var e in tiles) e.board = this;
+
     }
 
     public void Snapshot()
     {
-        var snap = new EntityState[entities.Length];
+        var entitySnap = new EntityState[entities.Length];
         for (int i = 0; i < entities.Length; i++) {
-            snap[i] = entities[i].Save();
+            entitySnap[i] = entities[i].Save();
         }
-        history.Push(snap);
+        entityHistory.Push(entitySnap);
+
+        var tileSnap = new TileState[tiles.Length];
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            tileSnap[i] = tiles[i].Save();
+        }
+        tileHistory.Push(tileSnap);
     }
 
     public void UndoTick()
     {
-        if (history.Count == 0) return;
+        if (entityHistory.Count == 0 || tileHistory.Count == 0) return;
 
-        var snap = history.Pop();
-        for (int i = 0; i < entities.Length; i++) {
-            entities[i].Restore(snap[i]);
+        var entitySnap = entityHistory.Pop();
+        for (int i = 0; i < entities.Length; i++)
+        {
+            entities[i].Restore(entitySnap[i]);
+        }
+
+        var tileSnap = tileHistory.Pop();
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            tiles[i].Restore(tileSnap[i]);
         }
     }
 
-    public Entity At(Vector2Int pos)
+    public Entity EntityAt(Vector2Int pos)
     {
         foreach (Entity e in entities)
+        {
+            if (e.pos == pos) return e;
+        }
+        return null;
+    }
+
+    public Tile TileAt(Vector2Int pos)
+    {
+        foreach (Tile e in tiles)
         {
             if (e.pos == pos) return e;
         }

@@ -12,12 +12,6 @@ public class BrainRobot : Robot
         terminal = FindAnyObjectByType<TerminalPanel>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public override void UseAbility()
     {
         Debug.Log("ability used");

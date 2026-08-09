@@ -22,17 +22,17 @@ public class Entity : MonoBehaviour
     }
 
     protected virtual void Awake() {
-        pos = GetGridPos(transform.position);
+        pos = Board.GetGridPos(transform.position);
         Init();
     }
 
     protected virtual void Update() {
-        transform.position = Vector3.MoveTowards(transform.position, GetWorldPos(pos), animationSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, Board.GetWorldPos(pos), animationSpeed * Time.deltaTime);
     }
 
     public virtual void Init()
     {
-        transform.position = GetWorldPos(pos);
+        transform.position = Board.GetWorldPos(pos);
     }
 
     public EntityState Save()
@@ -48,15 +48,6 @@ public class Entity : MonoBehaviour
         Init();
     }
 
-    public Vector3 GetWorldPos(Vector2Int gridPos)
-    {
-        return new Vector3(gridPos.x, gridPos.y);
-    }
-    public Vector2Int GetGridPos(Vector3 worldPos)
-    {
-        return new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
-    }
-
     public virtual void Tick() { }
 
     // public virtual void OnEnter(Entity other) { }
@@ -64,16 +55,22 @@ public class Entity : MonoBehaviour
     {
         if (!IsPushable()) return false;
 
-        Entity next = board.At(pos + dir);
-        if (next == null)
+        Tile nextTile = board.TileAt(pos + dir);
+        if (nextTile != null && !nextTile.IsStandable())
         {
-            pos = pos + dir;
+            return false;
+        }
+
+        Entity nextEntity = board.EntityAt(pos + dir);
+        if (nextEntity == null)
+        {
+            pos += dir;
             return true;
         }
 
-        if (next.TryPush(dir))
+        if (nextEntity.TryPush(dir))
         {
-            pos = pos + dir;
+            pos += dir;
             return true;
         }
 

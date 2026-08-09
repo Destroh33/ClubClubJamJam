@@ -13,11 +13,16 @@ public class Robot : Entity
 
     public bool Move(Vector2Int dir)
     {
-        Entity next = board.At(pos + dir);
-        
+        Entity next = board.EntityAt(pos + dir);
+        Tile nextTile = board.TileAt(pos + dir);
+
         if (next is Spike)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Die();
+        }
+        if (!nextTile.IsStandable())
+        {
+            Die();
         }
 
         if (next == null)
@@ -33,6 +38,11 @@ public class Robot : Entity
         }
 
         return false;
+    }
+
+    public void Die()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public bool Up()
