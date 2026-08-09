@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Robot))]
 public class CodeExecutor : MonoBehaviour
 {
     public List<CommandsListEntry> commandsList = new List<CommandsListEntry>();
+
     public List<string> validCommandNames;
     public
     int currentCommand = 0;
@@ -20,15 +22,11 @@ public class CodeExecutor : MonoBehaviour
     /// <param name="command"></param>
     /// 
 
-    public void UploadCommands(string filename)
+    public void SetCommandList(List<CommandsListEntry> comList) 
     {
-        
-    }
-
-    public void RemoveCommands()
-    {
-        commandsList = new List<CommandsListEntry>();
-    }
+        commandsList.Clear();
+        commandsList = comList;
+    } 
 
     public void ExecuteCommand()
     {
