@@ -3,46 +3,30 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using UnityEngine.Events;
-using Unity.VisualScripting;
-
 
 [Serializable]
-public struct CommandToAction
+public class CommandsListEntry
 {
-    public string commandName;
-    public UnityEvent commandAction;
+    public string name;
+    public int arg;
+    public int numTicksLeft;
 }
 
 public class CodeParsing : MonoBehaviour
 {
-    public TextMeshProUGUI codeText;
     public TextMeshProUGUI errorOutputText;
-    public int lineOfExecution = 0;
-    public int totalLines;
 
-    public List<CommandToAction> commandList;
-    private Dictionary<string, UnityEvent> commandsDict = new Dictionary<string, UnityEvent>();
-
-    public List<string> executionList = new List<string>();
-
-    
-
-    private void Awake()
-    {
-        commandList.Clear();
-        foreach (CommandToAction command in commandList) 
-        {
-            commandsDict.Add(command.commandName, command.commandAction);
-        }
-    }
 
     /// <summary>
     /// Code commands are separated purely by semicolons, each command is the block in between the semicolons
     /// </summary>
-    /// <param name="code"></param>
-    public void ParseText(TextMeshProUGUI codeText) 
+    /// <param name="codeText"></param> 
+    public static List<CommandsListEntry> ParseText(TextMeshProUGUI codeText) 
     {
+        List<string> commandList = new List<string>();
+
         string code = codeText.text;
+        int count = 0;
 
         while (code.Length != 0) 
         {
@@ -51,65 +35,57 @@ public class CodeParsing : MonoBehaviour
             if (indSemicolonNext != -1)
             {//LINE OF COMMAND
                 string command = code.Substring(0, indSemicolonNext);
-                command.Trim();
-                command.ToLower();
-                executionList.Add(command);
+                command = command.Trim();
+                command = command.ToLower();
+                commandList.Add(command);
             }
-            else 
-            {
-                if (lineOfExecution < totalLines) 
-                {
-                    LogError("ERROR: missing semicolon");
-                }
-            }
-
+            count++;
+            if (count > 500) break;
             
-
         }
+
+        return ParseExListToCommandEntries(commandList);
+
     }
 
-
-    //new CommandInfo("up;", ArgumentKind.Number, "up(tiles)", "Move north the given number of tiles."),
-    //    new CommandInfo("down;", ArgumentKind.Number, "down(tiles)", "Move south the given number of tiles."),
-    //    new CommandInfo("left;", ArgumentKind.Number, "left(tiles)", "Move west the given number of tiles."),
-    //    new CommandInfo("right;", ArgumentKind.Number, "right(tiles)", "Move east the given number of tiles."),
-    //    new CommandInfo("useAbility;", ArgumentKind.None, "useAbility()", "Trigger whatever this bot is built to do."),
-    //    new CommandInfo("wait;", ArgumentKind.Number, "wait(ticks)", "Do nothing for the given number of ticks."),
-    //    new CommandInfo("upload;", ArgumentKind.FileName, "upload(file)", "Send a program to the bot in front. Main bot only.")
 
     /// <summary>
-    /// <param name="command"></param>
-    public void ExecuteCommand(string command) 
+    /// helper function used by ParseText to get the struct based command list
+    /// </summary>
+    /// <param name="commandList"></param>
+    /// <returns></returns>
+    public static List<CommandsListEntry> ParseExListToCommandEntries(List<string> commandList) 
     {
-        string argString =  "";
-        int argAsNumber;
-        if (command.IndexOf('(') != -1)
+        if(commandList == null)return null;
+        List<CommandsListEntry> executionList = new List<CommandsListEntry>();
+        for (int i = 0; i < commandList.Count; i++) 
         {
-            argString = command.Substring(command.IndexOf('(')); //gets the argument
-            argString.Trim();
-            argString = argString.Trim('(', ')');
-        }
-        else 
-        {
-            LogError("Error: function is missing parenthesis");
-        }
-        int.TryParse(argString, out argAsNumber);
+            string argString = "";
+            int argAsNumber;
+            if (commandList[i].IndexOf('(') != -1)
+            {
+                argString = commandList[i].Substring(commandList[i].IndexOf('(')); //gets the argument
+                argString = argString.Trim();
+                argString = argString.Trim('(', ')');
+            }
+            else
+            {
+                //LogError("Error: function is missing parenthesis");
+            }
+            int.TryParse(argString, out argAsNumber);
 
-        string commandName = command.Substring(0, command.IndexOf("("));
+            string commandName = commandList[i].Substring(0, commandList[i].IndexOf("("));
 
-        if (!commandsDict.ContainsKey(commandName))
-        {
-            LogError("Error: invalid function");
-            return;
+            CommandsListEntry entry = new CommandsListEntry();
+            entry.name = commandName;
+            entry.arg = argAsNumber;
+            entry.numTicksLeft = (commandName == "upload" || commandName == "") ? 1 : entry.numTicksLeft = argAsNumber; //1 tick for an upload command or no param
         }
 
-        commandsDict[commandName].Invoke();
+
+        return executionList;
     }
 
-    void IncrementLineOfExecution(bool shouldIncrement) 
-    {
-        if(shouldIncrement)lineOfExecution++;
-    }
 
 
     public void LogError(string errorText) 
