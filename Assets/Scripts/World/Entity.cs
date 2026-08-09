@@ -8,7 +8,7 @@ public struct EntityState
     public List<CommandsListEntry> commandsList;
     public int currentCommand;
     public int ticks;
-    public bool carrying;
+    public int carrying;
 }
 
 public class Entity : MonoBehaviour

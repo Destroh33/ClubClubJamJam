@@ -2,32 +2,29 @@ using UnityEngine;
 
 public class BrainRobot : Robot
 {
-    public bool carrying;
+    public int carrying;
     public Workspace workspace;
 
     public override void PickUp()
     {
-        if (carrying)
-            return;
-
         var shell = board.FindNear<Shell>(pos);
         if (shell == null)
             return;
 
         shell.Take();
-        carrying = true;
+        carrying++;
     }
 
     public override void Give()
     {
-        if (!carrying)
+        if (carrying == 0)
             return;
 
         var crab = board.FindNear<Crab>(pos);
         if (crab == null || !crab.Receive())
             return;
 
-        carrying = false;
+        carrying--;
     }
 
     public override void Upload(string file)

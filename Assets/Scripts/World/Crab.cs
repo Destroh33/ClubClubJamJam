@@ -47,13 +47,13 @@ public class Crab : Entity
     public override EntityState Save()
     {
         var state = base.Save();
-        state.carrying = hasShell;
+        state.carrying = hasShell ? 1 : 0;
         return state;
     }
 
     public override void Restore(EntityState state)
     {
-        hasShell = state.carrying;
+        hasShell = state.carrying > 0;
         base.Restore(state);
     }
 }
