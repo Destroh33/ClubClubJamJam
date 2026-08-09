@@ -5,7 +5,7 @@ public class GridOverlay : MonoBehaviour
     public int width = 20;
     public int height = 10;
     public Color color = new Color(0.05f, 0.06f, 0.12f, 0.5f);
-    public float thickness = 0.03f;
+    public float thickness = 1f;
     public int sortingOrder = -1;
 
     void Start()
