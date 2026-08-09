@@ -56,12 +56,13 @@ public static class TerminalCommands
     static void Run(string[] arguments, TerminalPanel terminal)
     {
 
-        terminal.PrintMuted("nothing to run yet");
+        terminal.PrintMuted("uploading code now");
         Workspace workspace = terminal.Workspace;
         ScriptFile file = workspace.Files[0];
         CodeExecutor brainExecutor = terminal.brainRobot.GetComponent<CodeExecutor>();
         List<CommandsListEntry> comList = CodeParsing.ParseText(file.Source);
         brainExecutor.SetCommandList(comList);
+        terminal.Print("uploaded!");
     }
 
     static void Pause(string[] arguments, TerminalPanel terminal)
