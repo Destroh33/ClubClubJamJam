@@ -28,6 +28,11 @@ public class CodeExecutor : MonoBehaviour
         commandsList = comList;
     } 
 
+    public void ClearCommandList()
+    {
+        commandsList.Clear();
+    }
+
     public void ExecuteCommand()
     {
         if (currentCommand >= commandsList.Count) 

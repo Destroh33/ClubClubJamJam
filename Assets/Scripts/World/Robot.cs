@@ -1,11 +1,25 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public abstract class Robot : Entity
+public class Robot : Entity
 {
+    protected CodeExecutor codeExecutor;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        codeExecutor = GetComponent<CodeExecutor>();
+    }
 
     public bool Move(Vector2Int dir)
     {
         Entity next = board.At(pos + dir);
+        
+        if (next is Spike)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
         if (next == null)
         {
             pos = pos + dir;
@@ -41,9 +55,9 @@ public abstract class Robot : Entity
         return Move(new Vector2Int(1, 0));
     }
 
-    public abstract void UseAbility();
+    public virtual void UseAbility() {}
 
-    public abstract void AttachScript();
+    public virtual void AttachScript() {}
 
 
 }

@@ -21,16 +21,16 @@ public class Entity : MonoBehaviour
         return false;
     }
 
-    void Awake() {
+    protected virtual void Awake() {
         pos = GetGridPos(transform.position);
         Init();
     }
 
-    void Update() {
+    protected virtual void Update() {
         transform.position = Vector3.MoveTowards(transform.position, GetWorldPos(pos), animationSpeed * Time.deltaTime);
     }
 
-    public void Init()
+    public virtual void Init()
     {
         transform.position = GetWorldPos(pos);
     }
@@ -59,16 +59,7 @@ public class Entity : MonoBehaviour
 
     public virtual void Tick() { }
 
-    public virtual bool CanPush(Vector2Int dir)
-    {
-        if (!IsPushable()) return false;
-
-        Entity next = board.At(pos + dir);
-        if (next == null) return true;
-
-        return next.CanPush(dir);
-    }
-
+    // public virtual void OnEnter(Entity other) { }
     public virtual bool TryPush(Vector2Int dir)
     {
         if (!IsPushable()) return false;
