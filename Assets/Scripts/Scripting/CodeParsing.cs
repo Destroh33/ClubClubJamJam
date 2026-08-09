@@ -23,20 +23,21 @@ public class CodeParsing : MonoBehaviour
     public static List<CommandsListEntry> ParseText(string code) 
     {
         List<string> commandList = new List<string>();
-        
+
         int count = 0;
 
         while (code.Length != 0) 
         {
             int indSemicolonNext = code.IndexOf(';');
+            
+            if (indSemicolonNext == -1)break;
 
-            if (indSemicolonNext != -1)
-            {//LINE OF COMMAND
-                string command = code.Substring(0, indSemicolonNext);
-                command = command.Trim();
-                command = command.ToLower();
-                commandList.Add(command);
-            }
+            string command = code.Substring(0, indSemicolonNext);
+            command = command.Trim();
+            command = command.ToLower();
+            commandList.Add(command);
+
+
             code = code.Substring(indSemicolonNext + 1);
             if (code.Length == 0) 
             {

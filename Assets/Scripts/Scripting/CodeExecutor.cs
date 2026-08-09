@@ -4,6 +4,8 @@ using UnityEngine;
 public class CodeExecutor : MonoBehaviour
 {
     public List<CommandsListEntry> commandsList = new List<CommandsListEntry>();
+    public List<string> validCommandNames;
+    public
     int currentCommand = 0;
 
     //new CommandInfo("up;", ArgumentKind.Number, "up(tiles)", "Move north the given number of tiles."),
@@ -23,6 +25,14 @@ public class CodeExecutor : MonoBehaviour
         if (currentCommand >= commandsList.Count) 
         {
             return;
+            //end of execution
+        }
+        if (!validCommandNames.Contains(commandsList[currentCommand].name)) 
+        {
+            commandsList[currentCommand].numTicksLeft = 0;
+            currentCommand++;
+            return;
+            //error
         }
 
         switch (commandsList[currentCommand].name) 
