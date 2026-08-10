@@ -28,4 +28,4 @@ MonoBehaviour:
   startSpeed: 1
   maxTicks: 45
   sceneName: Level4
-  next: {fileID: 11400000, guid: 90de5d85969b24e6ba229f595af9e719, type: 2}
+  next: {fileID: 11400000, guid: 5952c6b35fffc4ed7aca6d357ed1f691, type: 2}
