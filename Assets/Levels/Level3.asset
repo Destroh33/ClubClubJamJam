@@ -13,12 +13,8 @@ MonoBehaviour:
   m_Name: Level3
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelName: Meet the Heavy
-  mainProgram: 'main {
-
-
-    }
-
-'
+  mainProgram: "main {\n    //make sure to keep track of\n    //the max number of
+    ticks you can use\n\n}"
   extraFiles: 2
   extraPrograms:
   - 'file1 {
@@ -34,4 +30,6 @@ MonoBehaviour:
 
 '
   startSpeed: 1
-  next: {fileID: 0}
+  maxTicks: 30
+  sceneName: 
+  next: {fileID: 11400000, guid: 90de5d85969b24e6ba229f595af9e719, type: 2}

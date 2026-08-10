@@ -31,6 +31,6 @@ MonoBehaviour:
     up(1);      right(3);     up(1);     down(1); //dance around - as you can see,
     the fence only opens when something sits on it     up(1); } '
   startSpeed: 1
-  maxTicks: 40
+  maxTicks: 30
   sceneName: Level2
   next: {fileID: 11400000, guid: f76db58a5bec43143be756cd421e097a, type: 2}
