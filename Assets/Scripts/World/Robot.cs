@@ -49,11 +49,15 @@ public class Robot : Entity
 
             spike.alive = false;
             spike.Init();
+            Sfx.SpikeBreak();
         }
 
         Entity next = board.EntityAt(target);
-        if (next != null && (next.IsSolid() && !next.TryPush(dir)))
+        if (next != null && (!CanPush() || !next.TryPush(dir)))
+        {
+            Sfx.Bump();
             return false;
+        }
 
         if (!board.IsStandable(target))
         {
@@ -69,6 +73,7 @@ public class Robot : Entity
     public void Die()
     {
         alive = false;
+        Sfx.Death();
         Init();
     }
 

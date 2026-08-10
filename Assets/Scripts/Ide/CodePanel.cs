@@ -82,6 +82,8 @@ public class CodePanel : MonoBehaviour
 
     void OnEdited(string value)
     {
+        Sfx.Key();
+
         if (value.IndexOf('\t') >= 0)
         {
             int caret = input.caretPosition;

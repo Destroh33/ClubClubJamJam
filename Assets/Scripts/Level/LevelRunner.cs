@@ -71,11 +71,13 @@ public class LevelRunner : MonoBehaviour
         {
             Clock.Running = false;
             terminal.PrintError("out of ticks, the level is lost");
+            Sfx.Lose();
             return;
         }
 
         board.Tick();
         ticks++;
+        Sfx.Tick();
         Report();
     }
 
@@ -113,9 +115,15 @@ public class LevelRunner : MonoBehaviour
         Clock.Running = false;
 
         if (Solved())
+        {
             terminal.PrintGood("level complete");
+            Sfx.Win();
+        }
         else
+        {
             terminal.PrintError("level failed, type reset and try again");
+            Sfx.Lose();
+        }
     }
 
     void Report()

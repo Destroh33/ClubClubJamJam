@@ -15,14 +15,33 @@ public class LevelConfig : ScriptableObject
     public Workspace CreateWorkspace()
     {
         var workspace = new Workspace();
-        workspace.Files.Add(new ScriptFile("main", mainProgram));
+        workspace.Files.Add(new ScriptFile("main", Wrap("main", mainProgram)));
 
         for (int i = 0; i < extraFiles; i++)
         {
-            string source = i < extraPrograms.Count ? extraPrograms[i] : "";
-            workspace.Files.Add(new ScriptFile("file" + (i + 1), source));
+            string name = "file" + (i + 1);
+            string body = i < extraPrograms.Count ? extraPrograms[i] : "";
+            workspace.Files.Add(new ScriptFile(name, Wrap(name, body)));
         }
 
         return workspace;
+    }
+
+    static string Wrap(string name, string body)
+    {
+        var text = new System.Text.StringBuilder();
+        text.Append(name).Append(" {\n");
+
+        foreach (string line in body.Split('\n'))
+        {
+            string trimmed = line.Trim();
+            if (trimmed == "}" || trimmed.EndsWith("{"))
+                continue;
+
+            text.Append(line).Append('\n');
+        }
+
+        text.Append('}');
+        return text.ToString();
     }
 }

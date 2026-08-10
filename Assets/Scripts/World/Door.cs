@@ -11,18 +11,23 @@ public class Door : Entity
         return !board.IsChannelActive(channel);
     }
 
+    bool open;
+    bool known;
+
     protected override void Update()
     {
         base.Update();
 
-        if (IsSolid())
+        bool nowOpen = !IsSolid();
+        if (!known || nowOpen != open)
         {
-            spriteRenderer.sprite = closedSprite;
+            if (known)
+                Sfx.Door(nowOpen);
+            open = nowOpen;
+            known = true;
         }
-        else
-        {
-            spriteRenderer.sprite = openSprite;
-        }
+
+        spriteRenderer.sprite = nowOpen ? openSprite : closedSprite;
     }
 
 }

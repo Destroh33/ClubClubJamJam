@@ -43,6 +43,8 @@ public class CommandEntry : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         ghost.raycastTarget = false;
         ghost.alpha = 0.85f;
 
+        Sfx.Drag(true);
+
         var rect = ghost.rectTransform;
         rect.anchorMin = Vector2.zero;
         rect.anchorMax = Vector2.zero;
@@ -68,6 +70,8 @@ public class CommandEntry : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnEndDrag(PointerEventData pointer)
     {
+        Sfx.Drag(false);
+
         if (ghost != null)
             Destroy(ghost.gameObject);
         ghost = null;

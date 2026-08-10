@@ -45,8 +45,8 @@ public class Workspace
     {
         var workspace = new Workspace();
         workspace.Files.Add(new ScriptFile("main", "main {\n    right(3);\n    pickup();\n    give();\n}\n"));
-        workspace.Files.Add(new ScriptFile("file1", "dozer {\n    up(4);\n    right(2);\n}\n"));
-        workspace.Files.Add(new ScriptFile("file2", "waiter {\n    wait(3);\n    left(2);\n}\n"));
+        workspace.Files.Add(new ScriptFile("file1", "file1 {\n    up(4);\n    right(2);\n}"));
+        workspace.Files.Add(new ScriptFile("file2", "file2 {\n    wait(3);\n    left(2);\n}"));
         return workspace;
     }
 }

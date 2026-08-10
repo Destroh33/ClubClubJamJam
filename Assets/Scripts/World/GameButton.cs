@@ -14,18 +14,28 @@ public class GameButton : Entity
         return false;
     }
 
+    bool pressed;
+
     public bool IsPressed()
     {
+        bool now = false;
         foreach (var e in board.entities)
         {
-            if (e.pos == pos && (e is Robot || e is PushableEntity))
+            if (e.alive && e.pos == pos && (e is Robot || e is PushableEntity))
             {
-                gameObject.GetComponent<SpriteRenderer>().sprite = openButton;
-                return true;
+                now = true;
+                break;
             }
         }
-        gameObject.GetComponent<SpriteRenderer>().sprite = closeButton;
-        return false;
-        
+
+        if (now != pressed)
+        {
+            pressed = now;
+            if (now)
+                Sfx.ButtonPress();
+        }
+
+        spriteRenderer.sprite = now ? openButton : closeButton;
+        return now;
     }
 }

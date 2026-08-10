@@ -13,6 +13,7 @@ public class BrainRobot : Robot
 
         shell.Take();
         carrying++;
+        Sfx.Collect();
     }
 
     public override void Give()
@@ -25,6 +26,7 @@ public class BrainRobot : Robot
             return;
 
         carrying--;
+        Sfx.Give();
     }
 
     public override void Upload(string file)
@@ -36,13 +38,24 @@ public class BrainRobot : Robot
         if (script == null)
             return;
 
-        var target = board.FindNear<Robot>(pos);
-        if (target == null || target == this)
-            return;
+        bool sent = false;
 
-        var executor = target.GetComponent<CodeExecutor>();
-        if (executor != null)
+        foreach (var dir in Board.Neighbours)
+        {
+            var target = board.At<Robot>(pos + dir);
+            if (target == null || target == this)
+                continue;
+
+            var executor = target.GetComponent<CodeExecutor>();
+            if (executor == null)
+                continue;
+
             executor.SetCommandList(CodeParsing.ParseText(script.Source));
+            sent = true;
+        }
+
+        if (sent)
+            Sfx.Upload();
     }
 
     public override EntityState Save()

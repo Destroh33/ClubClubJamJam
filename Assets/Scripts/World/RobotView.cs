@@ -42,6 +42,7 @@ public class RobotView : MonoBehaviour
         walking = 0.4f;
         playing = null;
         Play(walkClip);
+        Sfx.Walk();
     }
 
     string Resting()
