@@ -13,24 +13,11 @@ MonoBehaviour:
   m_Name: Level6
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelName: One File Two Crabs
-  mainProgram: 'main {
-
-
-    }'
+  mainProgram: 
   extraFiles: 2
   extraPrograms:
-  - 'file1 {
-
-
-    }
-
-'
-  - 'file2 {
-
-
-    }
-
-'
+  - 
+  - 
   startSpeed: 1
   maxTicks: 28
   sceneName: Level4

@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Level 1
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelName: first light
-  mainProgram: "main {\n    //Hi - welcome to SSH Level 1! type 'run' into the terminal\n   
+  mainProgram: "    //Hi - welcome to SSH Level 1! type 'run' into the terminal\n   
     //to execute this code.\n    //Code will execute on the brain crab.\n    //the
-    brain crab is tasked with picking up shells and \n    //giving them to other
-    crabs! \n    //Try modifying the commands and messing around with the code.\n   
-    //You can drag and drop code from the sidebar, or type.\n    //typing help in
-    the terminal shell will \n    //give you more info about commands.\n    //Note
-    that you have a limited number of moves you can use.\n    //one last tip: MAKE
-    SURE TO USE SEMICOLONS IN YOUR CODE!\n    \n    right(3);\n    up(2);\n    pickup();\n   
-    right(4);\n    up(3);\n    give();\n}"
+    brain crab is tasked with picking up shells and\n    //giving them to other crabs!\n   
+    //Try modifying the commands and messing around with the code.\n    //You can
+    drag and drop code from the sidebar, or type.\n    //typing help in the terminal
+    shell will\n    //give you more info about commands.\n    //Note that you have
+    a limited number of moves you can use.\n    //one last tip: MAKE SURE TO USE
+    SEMICOLONS IN YOUR CODE!\n\n    right(3);\n    up(2);\n    pickup();\n    right(4);\n   
+    up(3);\n    give();"
   extraFiles: 0
   extraPrograms: []
   startSpeed: 1

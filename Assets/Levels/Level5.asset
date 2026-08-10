@@ -13,21 +13,11 @@ MonoBehaviour:
   m_Name: Level5
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelName: Meet the Heavy
-  mainProgram: "main {\n    // Boxes break when they are pushed into spikes!\n\n}"
+  mainProgram: '    // Boxes break when they are pushed into spikes!'
   extraFiles: 2
   extraPrograms:
-  - 'file1 {
-
-
-    }
-
-'
-  - 'file2 {
-
-
-    }
-
-'
+  - 
+  - 
   startSpeed: 1
   maxTicks: 30
   sceneName: Level5

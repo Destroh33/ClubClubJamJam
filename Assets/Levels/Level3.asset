@@ -13,22 +13,12 @@ MonoBehaviour:
   m_Name: Level3
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelName: Wall Breakers
-  mainProgram: "main {\n    //make sure to keep track of\n    //the max number of
-    ticks you can use\n\n}"
+  mainProgram: "    //make sure to keep track of\n    //the max number of ticks you
+    can use"
   extraFiles: 2
   extraPrograms:
-  - 'file1 {
-
-
-    }
-
-'
-  - 'file2 {
-
-
-    }
-
-'
+  - 
+  - 
   startSpeed: 1
   maxTicks: 30
   sceneName: Level3
