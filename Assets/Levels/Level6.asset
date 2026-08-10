@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015aa22a66a572488311b54d5e502c0, type: 3}
   m_Name: Level6
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  levelName: One File Two Crabs
+  levelName: time crunch
   mainProgram: 
   extraFiles: 2
   extraPrograms:
