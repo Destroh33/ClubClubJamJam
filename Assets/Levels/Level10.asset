@@ -13,10 +13,8 @@ MonoBehaviour:
   m_Name: Level10
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelName: Meet the Heavy
-  mainProgram: 'main {
-
-
-    }'
+  mainProgram: "main {\n\t//sorry about this one\n\t// consider it a diabolically
+    hard bonus level\n}"
   extraFiles: 1
   extraPrograms:
   - 'file2 {
