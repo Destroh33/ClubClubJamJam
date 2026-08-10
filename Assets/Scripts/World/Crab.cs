@@ -4,6 +4,7 @@ public class Crab : Entity
 {
     public bool hasShell;
     public Animator animator;
+    [SerializeField] GameObject thoughtBubble;
 
     protected override void Awake()
     {
@@ -24,6 +25,7 @@ public class Crab : Entity
 
     public bool Receive()
     {
+        thoughtBubble.SetActive(false);
         if (hasShell)
             return false;
 
