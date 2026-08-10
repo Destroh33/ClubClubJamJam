@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MenuRoot : MonoBehaviour
 {
@@ -24,6 +23,6 @@ public class MenuRoot : MonoBehaviour
     public void Load(LevelConfig level)
     {
         GameSession.Selected = level;
-        SceneManager.LoadScene(level.sceneName.Length > 0 ? level.sceneName : levelScene);
+        SceneFade.Go(level.sceneName.Length > 0 ? level.sceneName : levelScene);
     }
 }

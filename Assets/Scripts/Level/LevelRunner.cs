@@ -55,7 +55,7 @@ public class LevelRunner : MonoBehaviour
             if (advance <= 0f)
             {
                 GameSession.Selected = level.next;
-                UnityEngine.SceneManagement.SceneManager.LoadScene(level.next.sceneName);
+                SceneFade.Go(level.next.sceneName);
             }
             return;
         }
@@ -134,7 +134,7 @@ public class LevelRunner : MonoBehaviour
             if (level != null && level.next != null && level.next.sceneName.Length > 0)
             {
                 terminal.PrintMuted("loading " + level.next.levelName);
-                advance = 2.5f;
+                advance = 1.6f;
             }
         }
         else
