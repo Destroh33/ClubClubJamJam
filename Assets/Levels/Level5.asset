@@ -19,6 +19,6 @@ MonoBehaviour:
   - 
   - 
   startSpeed: 1
-  maxTicks: 30
+  maxTicks: 40
   sceneName: Level5
   next: {fileID: 11400000, guid: c50c77c6501cdf045ba0bad3e38953ce, type: 2}
