@@ -38,16 +38,24 @@ public class BrainRobot : Robot
         if (script == null)
             return;
 
-        var target = board.FindNear<Robot>(pos);
-        if (target == null || target == this)
-            return;
+        bool sent = false;
 
-        var executor = target.GetComponent<CodeExecutor>();
-        if (executor == null)
-            return;
+        foreach (var dir in Board.Neighbours)
+        {
+            var target = board.At<Robot>(pos + dir);
+            if (target == null || target == this)
+                continue;
 
-        executor.SetCommandList(CodeParsing.ParseText(script.Source));
-        Sfx.Upload();
+            var executor = target.GetComponent<CodeExecutor>();
+            if (executor == null)
+                continue;
+
+            executor.SetCommandList(CodeParsing.ParseText(script.Source));
+            sent = true;
+        }
+
+        if (sent)
+            Sfx.Upload();
     }
 
     public override EntityState Save()
