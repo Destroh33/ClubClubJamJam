@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level6
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelName: time crunch
-  mainProgram: 
+  mainProgram: '    // watch the number of ticks you have!'
   extraFiles: 2
   extraPrograms:
   - 
