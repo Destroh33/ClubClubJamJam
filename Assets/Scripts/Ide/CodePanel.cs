@@ -24,6 +24,7 @@ public class CodePanel : MonoBehaviour
     readonly List<Button> tabs = new List<Button>();
     readonly List<string> history = new List<string>();
     int historyIndex;
+    Vector2 lastViewport;
     int previewLine = -1;
 
     public void Bind(Workspace files)
@@ -62,9 +63,41 @@ public class CodePanel : MonoBehaviour
 
     void LateUpdate()
     {
+        if (input.textComponent.textWrappingMode != TextWrappingModes.PreserveWhitespaceNoWrap)
+            input.textComponent.textWrappingMode = TextWrappingModes.PreserveWhitespaceNoWrap;
+
+        if (overlay.textWrappingMode != TextWrappingModes.PreserveWhitespaceNoWrap)
+            overlay.textWrappingMode = TextWrappingModes.PreserveWhitespaceNoWrap;
+
         var text = input.textComponent.rectTransform;
         var numbers = gutter.rectTransform;
         numbers.anchoredPosition = new Vector2(numbers.anchoredPosition.x, text.anchoredPosition.y);
+
+        Vector2 size = input.textViewport != null ? input.textViewport.rect.size : text.rect.size;
+        if (size == lastViewport)
+            return;
+
+        lastViewport = size;
+        Relayout();
+    }
+
+    void Relayout()
+    {
+        input.textComponent.ForceMeshUpdate();
+        overlay.ForceMeshUpdate();
+        input.ForceLabelUpdate();
+
+        if (input.isFocused)
+        {
+            int at = input.caretPosition;
+            input.caretPosition = at;
+            input.stringPosition = at;
+        }
+    }
+
+    void OnEnable()
+    {
+        lastViewport = Vector2.zero;
     }
 
     void Open(ScriptFile file)
