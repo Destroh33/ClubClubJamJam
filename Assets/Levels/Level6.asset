@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Level6
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelName: time crunch
-  mainProgram: 
+  mainProgram: '    // make sure not to run out of ticks'
   extraFiles: 2
   extraPrograms:
   - 
   - 
   startSpeed: 1
   maxTicks: 28
-  sceneName: Level4
-  next: {fileID: 0}
+  sceneName: Level6
+  next: {fileID: 11400000, guid: 87c8169a5b11a1d48888a64b93455620, type: 2}
