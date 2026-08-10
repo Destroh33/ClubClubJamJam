@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0015aa22a66a572488311b54d5e502c0, type: 3}
+  m_Name: Level2
+  m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
+  levelName: Upload
+  mainProgram: "main {\r\n    //In addition to being able to collect shells, our
+    main crab has a special property:\r\n    //it can upload code to other crab-bots!\r\n   
+    // use the upload command, and specify which file you want to select\r\n    //in
+    order to upload to adjacent crabs\r\n    //you can edit the code of another file
+    by just clicking on its tab\r\n    //ONLY the brain robot can pickup shells!\r\n\r\n   
+    right(3);\r\n    upload(file1); //upload to heavy\r\n    right(7);\r\n    up(1);\r\n   
+    upload(file2); //upload to dozer\r\n    right(1);\r\n    up(5);\r\n    pickup();
+    //get the shell that was gated before, but opened by the box on the button\r\n   
+    down(3);\r\n    right(3);\r\n    up(3);\r\n    give(); //give the shell to the
+    crab trapped behind the gate!\r\n}"
+  extraFiles: 2
+  extraPrograms:
+  - 'file1 {     //dozers have the ability to break through spikes that would normally
+    kill the brain crab     //use them to clear a path     right(10); } '
+  - 'file2 {    //heavies can push boxes around, letting you trigger buttons    
+    up(1);      right(3);     up(1);     down(1); //dance around - as you can see,
+    the fence only opens when something sits on it     up(1); } '
+  startSpeed: 1
+  maxTicks: 40
+  next: {fileID: 0}
