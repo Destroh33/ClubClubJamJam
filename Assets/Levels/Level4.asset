@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015aa22a66a572488311b54d5e502c0, type: 3}
   m_Name: Level4
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  levelName: Meet the Heavy
+  levelName: One-File Wonder
   mainProgram: 'main {
 
 
     }
 
 '
-  extraFiles: 2
+  extraFiles: 1
   extraPrograms:
   - 'file1 {
 
@@ -27,11 +27,7 @@ MonoBehaviour:
     }
 
 '
-  - 'file2 {
-
-
-    }
-
-'
   startSpeed: 1
+  maxTicks: 200
+  sceneName: 
   next: {fileID: 0}
