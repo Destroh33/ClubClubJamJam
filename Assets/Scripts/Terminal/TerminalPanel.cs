@@ -34,14 +34,17 @@ public class TerminalPanel : MonoBehaviour
     int historyIndex;
     string status = "";
 
-    public void Bind(CommandRegistry commands, string greeting)
+    public void Bind(CommandRegistry commands, string greeting, bool hint = true)
     {
         Commands = commands;
 
         input.onSubmit.AddListener(OnSubmit);
         input.onValueChanged.AddListener(OnTyped);
         Print(greeting);
-        PrintMuted("type help to see what you can do");
+
+        if (hint)
+            PrintMuted("type help to see what you can do");
+
         input.ActivateInputField();
     }
 

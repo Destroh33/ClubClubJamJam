@@ -12,6 +12,7 @@ public class LevelConfig : ScriptableObject
     public int maxTicks = 40;
     public string sceneName = "";
     public LevelConfig next;
+    public LevelConfig secret;
 
     public Workspace CreateWorkspace()
     {

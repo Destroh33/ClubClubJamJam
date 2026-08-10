@@ -6,6 +6,7 @@ public class Sfx : MonoBehaviour
 {
     const float Master = 1.0f;
 
+    const float MusicVol = 0.22f;
     const float AmbienceVol = 0.10f;
     const float TickVol = 0.12f;
     const float KeyVol = 0.14f;
@@ -30,6 +31,7 @@ public class Sfx : MonoBehaviour
     readonly Dictionary<string, AudioClip> clips = new Dictionary<string, AudioClip>();
 
     AudioSource source;
+    AudioSource music;
     AudioSource ambience;
     AudioSource steps;
     AudioSource dragging;
@@ -57,7 +59,11 @@ public class Sfx : MonoBehaviour
         source = gameObject.AddComponent<AudioSource>();
         source.playOnAwake = false;
 
+        music = Loop("music", MusicVol);
         ambience = Loop("waves", AmbienceVol);
+
+        if (music.clip != null)
+            music.Play();
         steps = Loop("walk", StepsVol);
         dragging = Loop("drag", DragVol);
 

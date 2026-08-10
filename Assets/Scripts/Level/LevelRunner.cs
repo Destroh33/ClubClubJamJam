@@ -11,7 +11,11 @@ public class LevelRunner : MonoBehaviour
     public bool Started;
     public int ticks;
 
+    public string endScene = "EndScene";
+    public string menuScene = "MenuScene";
+
     TerminalPanel terminal;
+    string pending;
     float timer;
     float advance;
 
@@ -36,6 +40,13 @@ public class LevelRunner : MonoBehaviour
         Report();
     }
 
+    public void Menu()
+    {
+        GameSession.Selected = null;
+        GameSession.Offer = null;
+        SceneFade.Go(menuScene);
+    }
+
     public void Reset()
     {
         while (board.UndoTick()) { }
@@ -53,10 +64,7 @@ public class LevelRunner : MonoBehaviour
         {
             advance -= Time.deltaTime;
             if (advance <= 0f)
-            {
-                GameSession.Selected = level.next;
-                SceneFade.Go(level.next.sceneName);
-            }
+                SceneFade.Go(pending);
             return;
         }
 
@@ -131,11 +139,24 @@ public class LevelRunner : MonoBehaviour
             terminal.PrintGood("level complete");
             Sfx.Win();
 
-            if (level != null && level.next != null && level.next.sceneName.Length > 0)
+            if (level == null)
+                return;
+
+            if (level.next != null && level.next.sceneName.Length > 0)
             {
+                GameSession.Selected = level.next;
+                pending = level.next.sceneName;
                 terminal.PrintMuted("loading " + level.next.levelName);
-                advance = 1.6f;
             }
+            else
+            {
+                GameSession.Selected = null;
+                GameSession.Offer = level.secret;
+                pending = endScene;
+                terminal.PrintMuted("that is the last one");
+            }
+
+            advance = 1.6f;
         }
         else
         {

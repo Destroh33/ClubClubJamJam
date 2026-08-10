@@ -17,6 +17,7 @@ public static class TerminalCommands
         registry.Register("botlist", "botlist", "Show every bot on the level.", BotList);
         registry.Register("files", "files", "List the program files in the workspace.", Files);
         registry.Register("clear", "clear", "Wipe the terminal.", Clear);
+        registry.Register("menu", "menu", "Leave the level and go back to the title.", Menu);
         registry.Register("exit", "exit", "Quit the game.", Exit);
         registry.Register("Lebron", "Lebron", "...", Lebron);
     }
@@ -168,6 +169,12 @@ public static class TerminalCommands
         terminal.Print("THE GOAT");
         terminal.PlayLebron();
         
+    }
+
+    static void Menu(string[] arguments, TerminalPanel terminal)
+    {
+        terminal.PrintMuted("back to the title");
+        terminal.Runner.Menu();
     }
 
     static void Clear(string[] arguments, TerminalPanel terminal)

@@ -31,6 +31,13 @@ public static class CrabArt
         return text.ToString();
     }
 
+    public const string Win =
+        "#   #  #####  #   #     #   #  #####  #   #\n" +
+        " # #   #   #  #   #     #   #    #    ##  #\n" +
+        "  #    #   #  #   #     # # #    #    # # #\n" +
+        "  #    #   #  #   #     ## ##    #    #  ##\n" +
+        "  #    #####  #####     #   #  #####  #   #\n";
+
     public const string Title =
         "\n"+
         "\n"+

@@ -19,6 +19,7 @@ MonoBehaviour:
   - 
   - 
   startSpeed: 1
-  maxTicks: 28
+  maxTicks: 21
   sceneName: Level6
-  next: {fileID: 11400000, guid: 87c8169a5b11a1d48888a64b93455620, type: 2}
+  next: {fileID: 0}
+  secret: {fileID: 11400000, guid: 87c8169a5b11a1d48888a64b93455620, type: 2}
