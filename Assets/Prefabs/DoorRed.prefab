@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1885161966671756052}
   - component: {fileID: 8418119374145865492}
   m_Layer: 0
-  m_Name: Door
+  m_Name: DoorRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,11 +78,11 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 876280901
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 389604016, guid: 440f69ee91b1f4540947c8cacf68d96e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -109,4 +109,6 @@ MonoBehaviour:
   pos: {x: 0, y: 0}
   alive: 1
   animationSpeed: 10
-  channel: 0
+  channel: 1
+  closedSprite: {fileID: 389604016, guid: 440f69ee91b1f4540947c8cacf68d96e, type: 3}
+  openSprite: {fileID: 6262772914469987847, guid: 440f69ee91b1f4540947c8cacf68d96e, type: 3}

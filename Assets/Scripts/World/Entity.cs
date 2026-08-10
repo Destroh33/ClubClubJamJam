@@ -19,6 +19,7 @@ public class Entity : MonoBehaviour
 
     [SerializeField] public Vector2Int pos;
     public bool alive = true;
+    protected SpriteRenderer spriteRenderer;
 
     [SerializeField] public float animationSpeed = 10f;
 
@@ -34,6 +35,7 @@ public class Entity : MonoBehaviour
 
     protected virtual void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         pos = Board.GetGridPos(transform.position);
         Init();
     }
