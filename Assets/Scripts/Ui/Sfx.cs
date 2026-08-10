@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class Sfx : MonoBehaviour
@@ -22,6 +23,7 @@ public class Sfx : MonoBehaviour
     const float ErrorVol = 0.45f;
     const float DeathVol = 0.58f;
     const float StingVol = 0.65f;
+    const float lebronBaahVol = 0.3f;
 
     static Sfx instance;
 
@@ -198,5 +200,10 @@ public class Sfx : MonoBehaviour
     public static void Lose()
     {
         Play("levellose", StingVol, 1f);
+    }
+
+    public static void Baah()
+    {
+        Play("bah", lebronBaahVol, 1f);
     }
 }
