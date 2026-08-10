@@ -1,18 +1,24 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [ExecuteAlways]
 public class WindowPanel : MonoBehaviour, IPointerDownHandler
 {
-    const float MinWidth = 280f;
-    const float MinHeight = 160f;
+    const float MinWidth = 170f;
+    const float MinHeight = 110f;
 
     public bool locked;
 
     public bool Maximized { get; private set; }
+    public bool Minimized { get; private set; }
 
     Vector2 savedPosition;
     Vector2 savedSize;
+    public TMP_Text minimizeLabel;
+
+    float openHeight;
 
     RectTransform Rect
     {
@@ -35,6 +41,51 @@ public class WindowPanel : MonoBehaviour, IPointerDownHandler
             Maximize();
     }
 
+    void RefreshMinimizeLabel()
+    {
+        if (minimizeLabel != null)
+            minimizeLabel.text = Minimized ? "+" : "-";
+    }
+
+    public void ToggleMinimize()
+    {
+        if (locked)
+            return;
+
+        Minimized = !Minimized;
+
+        var bar = GetComponentInChildren<TitleBar>(true);
+        foreach (Transform child in transform)
+        {
+            if (bar != null && child == bar.transform)
+                continue;
+
+            child.gameObject.SetActive(!Minimized);
+        }
+
+        if (Minimized)
+        {
+            openHeight = Rect.sizeDelta.y;
+            Rect.sizeDelta = new Vector2(Rect.sizeDelta.x, BarHeight(bar));
+        }
+        else
+        {
+            Rect.sizeDelta = new Vector2(Rect.sizeDelta.x, openHeight);
+        }
+
+        RefreshMinimizeLabel();
+        transform.SetAsLastSibling();
+    }
+
+    static float BarHeight(TitleBar bar)
+    {
+        if (bar == null)
+            return MinHeight;
+
+        float height = ((RectTransform)bar.transform).sizeDelta.y;
+        return height > 1f ? height : 30f;
+    }
+
     void LateUpdate()
     {
         if (locked)
@@ -43,7 +94,7 @@ public class WindowPanel : MonoBehaviour, IPointerDownHandler
 
     public void ToggleMaximize()
     {
-        if (locked)
+        if (locked || Minimized)
             return;
 
         if (Maximized)
@@ -81,7 +132,7 @@ public class WindowPanel : MonoBehaviour, IPointerDownHandler
 
     public void Resize(int xDir, int yDir, Vector2 delta)
     {
-        if (Maximized)
+        if (Maximized || Minimized)
             return;
 
         var size = Rect.sizeDelta;
