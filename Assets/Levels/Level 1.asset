@@ -25,5 +25,6 @@ MonoBehaviour:
   extraFiles: 0
   extraPrograms: []
   startSpeed: 1
-  maxTicks: 40
-  next: {fileID: 0}
+  maxTicks: 30
+  sceneName: Level1
+  next: {fileID: 11400000, guid: 4fc191ed0cb99844f81de15a8ba8d4c4, type: 2}

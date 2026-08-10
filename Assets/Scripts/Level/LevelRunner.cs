@@ -13,6 +13,7 @@ public class LevelRunner : MonoBehaviour
 
     TerminalPanel terminal;
     float timer;
+    float advance;
 
     public int MaxTicks
     {
@@ -48,6 +49,17 @@ public class LevelRunner : MonoBehaviour
 
     void Update()
     {
+        if (advance > 0f)
+        {
+            advance -= Time.deltaTime;
+            if (advance <= 0f)
+            {
+                GameSession.Selected = level.next;
+                UnityEngine.SceneManagement.SceneManager.LoadScene(level.next.sceneName);
+            }
+            return;
+        }
+
         if (!Clock.Running || Clock.Paused)
             return;
 
@@ -118,6 +130,12 @@ public class LevelRunner : MonoBehaviour
         {
             terminal.PrintGood("level complete");
             Sfx.Win();
+
+            if (level != null && level.next != null && level.next.sceneName.Length > 0)
+            {
+                terminal.PrintMuted("loading " + level.next.levelName);
+                advance = 2.5f;
+            }
         }
         else
         {

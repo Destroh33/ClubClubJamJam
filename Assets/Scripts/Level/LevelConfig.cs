@@ -10,6 +10,7 @@ public class LevelConfig : ScriptableObject
     public List<string> extraPrograms = new List<string>();
     public float startSpeed = 1f;
     public int maxTicks = 40;
+    public string sceneName = "";
     public LevelConfig next;
 
     public Workspace CreateWorkspace()

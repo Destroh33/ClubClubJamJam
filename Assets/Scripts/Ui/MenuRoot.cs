@@ -24,6 +24,6 @@ public class MenuRoot : MonoBehaviour
     public void Load(LevelConfig level)
     {
         GameSession.Selected = level;
-        SceneManager.LoadScene(levelScene);
+        SceneManager.LoadScene(level.sceneName.Length > 0 ? level.sceneName : levelScene);
     }
 }

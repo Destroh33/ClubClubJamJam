@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015aa22a66a572488311b54d5e502c0, type: 3}
   m_Name: Level2
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  levelName: Upload
+  levelName: making friends
   mainProgram: "main {\r\n    //In addition to being able to collect shells, our
     main crab has a special property:\r\n    //it can upload code to other crab-bots!\r\n   
     // use the upload command, and specify which file you want to select\r\n    //in
@@ -32,4 +32,5 @@ MonoBehaviour:
     the fence only opens when something sits on it     up(1); } '
   startSpeed: 1
   maxTicks: 40
-  next: {fileID: 0}
+  sceneName: Level2
+  next: {fileID: 11400000, guid: f76db58a5bec43143be756cd421e097a, type: 2}
