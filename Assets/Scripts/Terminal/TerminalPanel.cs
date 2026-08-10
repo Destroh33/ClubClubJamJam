@@ -39,9 +39,16 @@ public class TerminalPanel : MonoBehaviour
         Commands = commands;
 
         input.onSubmit.AddListener(OnSubmit);
+        input.onValueChanged.AddListener(OnTyped);
         Print(greeting);
         PrintMuted("type help to see what you can do");
         input.ActivateInputField();
+    }
+
+    void OnTyped(string typed)
+    {
+        if (typed.Length > 0)
+            Sfx.Key();
     }
 
     public void SetStatus(string text)
@@ -83,6 +90,7 @@ public class TerminalPanel : MonoBehaviour
     public void PrintError(string text)
     {
         Line(ErrorColor, text);
+        Sfx.Error();
     }
 
     public void PrintGood(string text)
@@ -145,6 +153,7 @@ public class TerminalPanel : MonoBehaviour
         if (line.Length == 0)
             return;
 
+        Sfx.Enter();
         PrintEcho(line);
         history.Add(line);
         historyIndex = history.Count;

@@ -16,8 +16,11 @@ public class PushableEntity : Entity
         {
             alive = false;
             Init();
+            Sfx.BoxBreak();
+            return true;
         }
 
+        Sfx.BoxSlide();
         return true;
     }
 }
