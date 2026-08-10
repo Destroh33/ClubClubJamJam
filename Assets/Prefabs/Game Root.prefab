@@ -2420,22 +2420,22 @@ MonoBehaviour:
   runner: {fileID: 0}
   cursors:
     pointer:
-      texture: {fileID: 2800000, guid: 3856e8e515af8ed48a0a89e0c84bca4e, type: 3}
-      hotspot: {x: 0, y: 0}
+      texture: {fileID: 2800000, guid: 7bc54e821caa445fe8d2671661f7cd44, type: 3}
+      hotspot: {x: 3, y: 2}
     hand:
-      texture: {fileID: 2800000, guid: 2abe498c14ed47e47a65ba87d58f2fad, type: 3}
+      texture: {fileID: 2800000, guid: 72753a240b6a44a0a9e423d99b2dd745, type: 3}
       hotspot: {x: 6.663636, y: 6.7727275}
     resizeHorizontal:
-      texture: {fileID: 2800000, guid: 7484ca63405185745bdd63058428728b, type: 3}
+      texture: {fileID: 2800000, guid: c89b821750b344aefa98ea809f2d1dc0, type: 3}
       hotspot: {x: 8, y: 10}
     resizeVertical:
-      texture: {fileID: 2800000, guid: d8b329c8526de21488cb8b760a9197ed, type: 3}
+      texture: {fileID: 2800000, guid: 1ae17916707d04134b19723f9f3f15ed, type: 3}
       hotspot: {x: 10, y: 8}
     resizeDiagonalDown:
-      texture: {fileID: 2800000, guid: fbf812ffd28c7ad42b50c144ee9e3f3e, type: 3}
+      texture: {fileID: 2800000, guid: 13ba9cc69405e47259bbc5d81c4c7914, type: 3}
       hotspot: {x: 8, y: 8}
     resizeDiagonalUp:
-      texture: {fileID: 2800000, guid: 6f5a412a6436039448c9d2ac7e607763, type: 3}
+      texture: {fileID: 2800000, guid: 0dc9b2edcceaf4510ac9d33b8ab50b51, type: 3}
       hotspot: {x: 8, y: 8}
 --- !u!1 &3842877759284730746
 GameObject:
