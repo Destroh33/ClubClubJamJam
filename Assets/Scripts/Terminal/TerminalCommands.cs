@@ -18,6 +18,7 @@ public static class TerminalCommands
         registry.Register("files", "files", "List the program files in the workspace.", Files);
         registry.Register("clear", "clear", "Wipe the terminal.", Clear);
         registry.Register("exit", "exit", "Quit the game.", Exit);
+        registry.Register("Lebron", "Lebron", "...", Lebron);
     }
 
     static void Help(string[] arguments, TerminalPanel terminal)
@@ -160,6 +161,11 @@ public static class TerminalCommands
         terminal.PrintHeading("program files");
         foreach (var file in terminal.Workspace.Files)
             terminal.PrintRow(file.Name, file.Source.Split('\n').Length + " lines");
+    }
+
+    static void Lebron(string[] arguments, TerminalPanel terminal) 
+    {
+        terminal.Print("THE GOAT");
     }
 
     static void Clear(string[] arguments, TerminalPanel terminal)

@@ -1182,7 +1182,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 960, y: 540}
+  m_SizeDelta: {x: 1459, y: 820.5}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &483855924
 MonoBehaviour:
@@ -1666,6 +1666,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6a876dde2b8c03844be4e00b9508b18b, type: 2}
   - {fileID: 11400000, guid: 4fc191ed0cb99844f81de15a8ba8d4c4, type: 2}
   - {fileID: 11400000, guid: f76db58a5bec43143be756cd421e097a, type: 2}
+  - {fileID: 11400000, guid: 1d1365e0c6cd2444593aa362cf8d763a, type: 2}
+  - {fileID: 11400000, guid: 5952c6b35fffc4ed7aca6d357ed1f691, type: 2}
+  - {fileID: 11400000, guid: c50c77c6501cdf045ba0bad3e38953ce, type: 2}
+  - {fileID: 11400000, guid: 87c8169a5b11a1d48888a64b93455620, type: 2}
   levelScene: SampleScene
   credits:
   - Made by ACM Studio @ UCLA
