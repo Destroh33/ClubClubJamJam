@@ -10,6 +10,7 @@ public class Crab : Entity
     {
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
+        thoughtBubble.SetActive(true);
         base.Awake();
     }
 
