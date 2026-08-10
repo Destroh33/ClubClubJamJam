@@ -203,4 +203,9 @@ public class TerminalPanel : MonoBehaviour
             PrintMuted(string.Join("  ", names));
         }
     }
+
+    public void PlayLebron() 
+    {
+        Sfx.Baah();
+    }
 }

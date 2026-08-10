@@ -166,6 +166,8 @@ public static class TerminalCommands
     static void Lebron(string[] arguments, TerminalPanel terminal) 
     {
         terminal.Print("THE GOAT");
+        terminal.PlayLebron();
+        
     }
 
     static void Clear(string[] arguments, TerminalPanel terminal)
